@@ -1,0 +1,81 @@
+  .main {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+  }
+  .header {
+    display: flex;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    transition: border-color 0.3s ease-in-out;
+    padding: 20px 0px;
+  }
+  .header a{
+    padding: 10px;
+    font-size: 20px;
+    margin-right: 5px;
+  }
+  .header span{
+    padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 5px;
+    margin-left: 20px;
+    margin-right: 40%;
+  }
+  .product-list {
+    list-style:none;
+    width:300px;
+    height:150px;
+  }
+  .product-info{
+    font-size: 15px;
+    width: 30%;
+  }
+  .footer{
+    display: flex;
+    margin-left: 30%;
+    position : absolute;
+    bottom : 0;
+  }
+  .register{
+    background-color: rgb(255, 163, 71);
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+  }
+  #no-mobile {
+      position: absolute;
+      z-index: 99;
+      height: 100vh;
+      width: 100vw;
+      background-color: rgb(255, 163, 71);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      top: 0;
+      font-size: 32px;
+  }
+  .div2 {
+    margin-top : 5px;
+    margin-left : 10px;
+    margin-bottom : 10px;
+    width:45%;
+    height:110px;
+    float:left
+  }
+  .div3 {
+    margin-top : 18px;
+    margin-bottom : 10px;
+    width:45%;
+    height:110px;
+    float:left
+   }
+
+   .div3 p{
+    font-size: 15px;
+   }
+  @media screen and (max-width:645px){
+      #no-mobile {
+          display: none;
+      }
+  }

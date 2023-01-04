@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Karrot 마켓 클론코딩 챌린지</title>
+</head>
+<style>
+  .login-form{
+    display: flex;
+    flex-direction: column;
+    margin: 35px;
+  }
+
+  .login-form p{
+    margin-top: 10px;
+    margin-bottom: 18px;
+  }
+
+  .login-form input{
+    padding: 8px;
+    margin-bottom: 5px;
+  }
+
+  .login-form input[type="submit"] {
+    background-color: rgb(255, 163, 71);
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 10px 0px;
+    font-size: 25px;
+    text-align: center;
+    color: rgb(255, 255, 255);
+    margin-top: 30px;
+    margin-bottom: 25px;
+    border-color: white;
+  }
+
+  #no-mobile {
+      position: absolute;
+      z-index: 99;
+      height: 100vh;
+      width: 100vw;
+      background-color: rgb(255, 163, 71);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      top: 0;
+      font-size: 32px;
+  }
+
+  @media screen and (max-width:645px){
+      #no-mobile {
+          display: none;
+      }
+  }
+</style>
+<body>
+  <form class="login-form" th:action="@{/login}" th:object="${form}" method="post">
+    <div th:if="${param.error}">
+      <div>
+        사용자 ID 또는 비밀번호를 확인해주세요.
+      </div>
+    </div>
+    <p>로그인</p>
+    <p>이메일(ID)</p>
+    <input type="email" name="email" placeholder="아이디(이메일)을 입력해주세요" required>
+    <p>비밀번호(ID)</p>
+    <input type="password" name="password" placeholder="비밀번호 입력해주세요" required>
+    <input type="submit" value="로그인">
+  </form>
+  <div id="no-mobile">
+    <span>화면 크기를 줄여주세요</span>
+  </div>
+</body>
+</html>

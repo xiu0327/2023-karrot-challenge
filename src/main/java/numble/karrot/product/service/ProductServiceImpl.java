@@ -1,0 +1,54 @@
+package numble.karrot.product.service;
+
+import lombok.RequiredArgsConstructor;
+import numble.karrot.member.domain.Member;
+import numble.karrot.product.domain.Product;
+import numble.karrot.product.domain.ProductStatus;
+import numble.karrot.product.repository.ProductRepository;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+@Transactional
+public class ProductServiceImpl implements ProductService{
+
+    private final ProductRepository productRepository;
+
+    @Override
+    public Product save(Product product) {
+        return productRepository.save(product);
+    }
+
+    @Override
+    public Product findProductDetails(Long id) {
+        return productRepository.findProductById(id);
+    }
+
+    @Override
+    public List<Product> findAllProducts() {
+        return productRepository.findAllProduct();
+    }
+
+    @Override
+    public List<Product> findProductsByMember(Long memberId) {
+        return productRepository.findProductByMember(memberId);
+    }
+
+    @Override
+    public List<Product> findProductsByStatus(Long memberId, ProductStatus productStatus) {
+        return productRepository.findProductByStatus(memberId, productStatus);
+    }
+
+    @Override
+    public void deleteProduct(Product product) {
+        productRepository.removeProduct(product);
+    }
+
+    @Override
+    public Product updateProduct(Long id, Product product) {
+        return productRepository.updateProduct(id, product);
+    }
+}

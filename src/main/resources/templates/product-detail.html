@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/components/detail.css}">
+    <link rel="stylesheet" type="text/css" href="css/components/detail.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karrot 마켓 클론코딩 챌린지</title>
+</head>
+<body>
+    <a href="/products/list" style="margin-right: 10px;">목록으로</a>
+    <div class="slider">
+        <input type="radio" th:each="item, i: ${productDetail.productImages}" name="slide" th:id="'slide' + ${i.index}" checked />
+        <ul id="imgholder" class="imgs">
+          <li th:each="item: ${productDetail.productImages}">
+            <img th:src="${item}"/>
+          </li>
+        </ul>
+        <div class="bullets">
+          <label th:each="item, i : ${productDetail.productImages}" th:for="'slide'+${i.index}">&nbsp;</label>
+        </div>
+      </div> 
+    <div class="main">
+        <div class="profile">
+            <span>
+                <img th:src="${productDetail.profile}"/>
+            </span>
+            <span th:text="${productDetail.nickName}">닉네임</span>
+        </div>
+        <div class="product-info">
+            <p th:text="${productDetail.title}">상품명</p>
+            <p th:text="${productDetail.date}">상품 등록 시간</p>
+            <p th:text="${productDetail.status}">상품상태</p>
+            <p th:text="${productDetail.price + ' 원'}">상품가격</p>
+            <p th:text="${productDetail.category}">상품 카테고리</p>
+            <p th:text="${productDetail.content}">상품 내용</p>
+            <div style="display: inline-block;">
+                <span th:text="${productDetail.nickName} + ' 님의 판매상품'" style="margin-right: 30px;">닉네임님의 판매상품</span>
+                <a th:href="@{/products/list/other/all(memberId=${memberId})}">모두 보기</a>
+            </div>
+            <div th:each="item, i: ${otherProducts}">
+                <span th:if="${i.index==0}" style="display: inline-block;">
+                    <div>
+                        <a th:href="${'/products/list/' + item.id}">
+                            <img th:src="${item.thumbnail}" style="margin-top: 10px; width: 100px; height: 100px;">
+                        </a>
+                    </div>
+                    <p th:text="${item.title}">상품명</p>
+                    <p th:text="${item.price + ' 원'}">가격</p>
+                </span>
+                <span th:if="${i.index==1}" style="display: inline-block;">
+                    <div>
+                        <a th:href="${'/products/list/' + item.id}">
+                            <img th:src="${item.thumbnail}" style="margin-top: 10px; width: 100px; height: 100px;">
+                        </a>
+                    </div>
+                    <p th:text="${item.title}">상품명</p>
+                    <p th:text="${item.price + ' 원'}">가격</p>
+                </span>
+                <span th:if="${i.index==2}" style="display: inline-block;">
+                    <div>
+                        <a th:href="${'/products/list/' + item.id}">
+                            <img th:src="${item.thumbnail}" style="margin-top: 10px; width: 100px; height: 100px;">
+                        </a>
+                    </div>
+                    <p th:text="${item.title}">상품명</p>
+                    <p th:text="${item.price + ' 원'}">가격</p>
+                </span>
+            </div>
+        </div>
+<!--        <div class = "footer">-->
+<!--            <div class="sub1">-->
+<!--                <button th:if="${#lists.contains(myInfo?.heartProducts, product.id)}" class ="heartBtn"  type="button" id="btn-deleteHeart">-->
+<!--                    &lt;!&ndash; <img src="/images/realHeartBtn.png" style="width:40px; height:40px" id="heart_img"> &ndash;&gt;-->
+<!--                    <span style="font-size: 40px;">🤍</span>-->
+<!--                </button>-->
+<!--                <button th:unless="${#lists.contains(myInfo?.heartProducts, product.id)}"  class="heartBtn" type="button" id="btn-heart">-->
+<!--                    <span style="font-size: 40px;">💖</span>-->
+<!--                </button>-->
+<!--                <span>가격</span>-->
+<!--            </div>-->
+<!--            <div class="sub2">-->
+<!--                <button style="margin: 20px">채팅하기</button>-->
+<!--            </div>-->
+<!--        </div>-->
+    </div>
+    <div id="no-mobile">
+        <span>화면 크기를 줄여주세요</span>
+    </div>     
+</body>
+</html>

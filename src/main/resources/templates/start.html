@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karrot 마켓 클론코딩 챌린지</title>
+</head>
+<style>
+    .start {
+      margin: 30px 0px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .start__img {
+      width: 60%;
+      opacity: 0.7;
+    }
+
+    .start__title {
+      margin-bottom: 20px;
+      font-size: 25px;
+    }
+
+    .start__text {
+      width: 60%;
+      opacity: 0.7;
+    }
+
+    .start-box {
+      display: flex;
+      flex-direction: column;
+      margin: 0px 30px;
+    }
+
+    .start-box .start-button {
+      background-color: rgb(255, 163, 71);
+      cursor: pointer;
+      border-radius: 5px;
+      border: none;
+      padding: 15px 0px;
+      font-size: 25px;
+      text-align: center;
+      color: rgb(255, 255, 255);
+      margin-top: 30px;
+      margin-bottom: 25px;
+    }
+
+    .start-box .login-button {
+      text-align: center;
+      text-decoration: none;
+      color: rgb(255, 163, 71);
+      font-size: 17px;
+    }
+
+    .start-box .login-text {
+      text-align: center;
+    }
+
+    #no-mobile {
+        position: absolute;
+        z-index: 99;
+        height: 100vh;
+        width: 100vw;
+        background-color: rgb(255, 163, 71);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        top: 0;
+        font-size: 32px;
+    }
+
+    @media screen and (max-width:645px){
+        #no-mobile {
+            display: none;
+        }
+    }
+</style>
+<body>
+    <div class="start">
+        <img class="start__img" width="250px" src="https://dnvefa72aowie.cloudfront.net/karrot-cs/etc/202007/5709077d31ef3372a0bd877ef2f1122453f310b2342733932e9f6223ecc9a021.png" >
+    </div>
+
+    <header class="start">
+        <h1 class="start__title">당신 근처의 Karrot 마켓</h1>
+        <p class="start__text">이제 내 동내에서</p>
+        <p class="start__text">간편하게 중고 거래 하자</p>
+    </header>
+
+    <div class="start-box">
+        <button class="start-button" onclick="location.href='/join'">시작하기</button>
+        <p class="login-text">이미 계정이 있나요?</p>
+        <a class="login-button" sec:authorize="isAnonymous()" th:href="@{/login}">로그인</a>
+        <a class="login-button" sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a>
+    </div>
+
+    <div id="no-mobile">
+        <span>모바일 화면 크기를 벗어납니다.</span>
+    </div>
+</body>
+</html>

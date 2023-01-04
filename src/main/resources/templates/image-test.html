@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>이미지 업로드 테스트</title>
+</head>
+<body>
+    <div th:each="list : ${tableList}">
+        <span th:text="'이미지 경로 :'+ ${list}"/>
+        <button>❌</button>
+    </div>
+    <form th:action="@{/image-test}" th:object="${form}" method="post" enctype="multipart/form-data">
+        <input type="file" th:field="*{rowProfile}">
+        <input type="text" th:field="*{nickName}">
+        <input type="submit" value="변경">
+    </form>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/components/join.css}">
+  <link rel="stylesheet" type="text/css" href="css/components/join.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Karrot 마켓 클론코딩 챌린지</title>
+</head>
+<body>
+  <form th:action="@{/join}" th:object="${form}" class="join-form" method="post">
+    <p>회원가입</p>
+    <p>이메일(ID)</p>
+    <input type="email" th:field="*{email}" placeholder="아이디(이메일)을 입력해주세요" required>
+    <p>비밀번호(PW)</p>
+    <input type="password" th:field="*{password}" placeholder="비밀번호를 입력해주세요" required>
+    <p>이름</p>
+    <input type="text" th:field="*{name}" placeholder="이름(실명)을 입력해주세요" required>
+    <p>핸드폰번호</p>
+    <input type="text" th:field="*{phone}" placeholder="핸드폰 번호를 입력해주세요" required>
+    <p>닉네임</p>
+    <input type="text" th:field="*{nickname}" placeholder="닉네임을 입력해주세요" required>
+    <input type="submit" value="가입하기"/>
+  </form>
+
+  <div id="no-mobile">
+    <span>화면 크기를 줄여주세요</span>
+  </div>
+</body>
+</html>
