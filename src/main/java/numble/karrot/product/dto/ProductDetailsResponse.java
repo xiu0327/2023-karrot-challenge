@@ -1,15 +1,10 @@
 package numble.karrot.product.dto;
 
-import jdk.jshell.Snippet;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import numble.karrot.interest.domain.Interest;
-import numble.karrot.member.domain.Member;
 import numble.karrot.product.domain.Product;
-import numble.karrot.product.domain.ProductCategory;
-import numble.karrot.product_image.domain.ProductDefaultImage;
 
 import java.time.*;
 import java.util.List;
