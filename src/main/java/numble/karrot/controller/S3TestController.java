@@ -34,7 +34,7 @@ public class S3TestController {
 
     @PostMapping("/image-test")
     public String upload(@ModelAttribute MemberUpdateRequest form) throws IOException {
-        String url = s3Uploader.getImageUrl(form.getRowProfile(), "static");
+        String url = s3Uploader.getImageUrl(form.getProfile(), "static");
         System.out.println("url = " + url);
         return "start";
     }

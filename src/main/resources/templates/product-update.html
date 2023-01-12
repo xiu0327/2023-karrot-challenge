@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <head>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      th:href="@{/css/components/register.css}"
+    />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Karrot 마켓 클론코딩 챌린지</title>
+  </head>
+  <body>
+    <form
+      class="register-form"
+      th:action="@{/products/update(productId=${product.id})}"
+      th:object="${form}"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <input type="file" th:field="*{productImages}" multiple />
+      <input
+        type="text"
+        th:field="*{title}"
+        th:placeholder="${product.title}"
+        required
+      />
+      <input
+        type="number"
+        th:field="*{price}"
+        th:placeholder="${product.price}"
+        required
+      />
+      <select th:field="*{category}" style="height: 30px" required>
+        <option
+          th:each="category : ${categoryList}"
+          th:value="${category}"
+          th:text="${category}"
+        ></option>
+      </select>
+      <textarea
+        th:field="*{content}"
+        th:placeholder="${product.content}"
+        style="height: 300px"
+        required
+      ></textarea>
+      <input type="submit" value="수정" />
+    </form>
+    <div id="no-mobile">
+      <span>화면 크기를 줄여주세요</span>
+    </div>
+  </body>
+</html>

@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -44,6 +45,11 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public void deleteMember(Member member) {
         memberRepository.removeMember(member);
+    }
+
+    @Override
+    public List<Member> findAllMember() {
+        return memberRepository.findAllMember();
     }
 
 }

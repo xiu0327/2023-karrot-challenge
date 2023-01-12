@@ -17,6 +17,6 @@ public interface ProductImageService {
     ProductImage save(ProductImage productImage);
     List<ProductImage> findProductImages(Product product);
     ProductImage updateProductImage(ProductImage oldProductImage, ProductImage newProductImage);
-    ProductImage deleteProductImage(ProductImage productImage);
+    void deleteProductImage(List<ProductImage> productImages);
     ProductImage convert(MultipartFile multipartFile, Product product) throws IOException;
 }

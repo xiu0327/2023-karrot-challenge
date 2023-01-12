@@ -1,26 +1,49 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/components/register.css}">
-    <link rel="stylesheet" type="text/css" href="css/components/register.css">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      th:href="@{/css/components/register.css}"
+    />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Karrot 마켓 클론코딩 챌린지</title>
-</head>
-<body>
-    <form class="register-form" th:action="@{/products/register}" th:object="${form}" method="post" enctype="multipart/form-data">
-        <input type="file" th:field="*{productImages}" multiple required>
-        <input type="text" th:field="*{title}" placeholder="제목" required>
-        <input type="number" th:field="*{price}"  placeholder="가격(원)" required>
-        <select  th:field="*{category}" style="height:30px;" required>
-            <option th:each="category : ${categoryList}" th:value="${category}" th:text="${category}"></option>
-        </select>
-        <textarea  th:field="*{content}" placeholder="게시글 내용을 작성해주세요. 가짜 품목 및 판매금지 품목은 게시가 제한됩니다." style="height:300px;" required></textarea>
-        <input type="submit" value="등록">
+  </head>
+  <body>
+    <form
+      class="register-form"
+      th:action="@{/products/register}"
+      th:object="${form}"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <input type="file" th:field="*{productImages}" multiple required />
+      <input type="text" th:field="*{title}" placeholder="제목" required />
+      <input
+        type="number"
+        th:field="*{price}"
+        placeholder="가격(원)"
+        required
+      />
+      <select th:field="*{category}" style="height: 30px" required>
+        <option
+          th:each="category : ${categoryList}"
+          th:value="${category}"
+          th:text="${category}"
+        ></option>
+      </select>
+      <textarea
+        th:field="*{content}"
+        placeholder="게시글 내용을 작성해주세요. 가짜 품목 및 판매금지 품목은 게시가 제한됩니다."
+        style="height: 300px"
+        required
+      ></textarea>
+      <input type="submit" value="등록" />
     </form>
     <div id="no-mobile">
-        <span>화면 크기를 줄여주세요</span>
+      <span>화면 크기를 줄여주세요</span>
     </div>
-</body>
+  </body>
 </html>

@@ -19,8 +19,9 @@ public interface ProductService {
     Product save(Product product);
     Product findProductDetails(Long id);
     List<Product> findAllProducts();
-    List<Product> findProductsByMember(Long memberId);
-    List<Product> findProductsByStatus(Long memberId, ProductStatus productStatus);
     void deleteProduct(Product product);
     Product updateProduct(Long id, Product product);
+    Product updateProductStatus(Long id, ProductStatus status);
+    List<Product> findProductsByStatus(Long memberId, ProductStatus status);
+    List<Product> findProductsByMember(Long memberId);
 }

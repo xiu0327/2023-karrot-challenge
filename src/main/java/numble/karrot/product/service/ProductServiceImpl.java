@@ -2,6 +2,7 @@ package numble.karrot.product.service;
 
 import lombok.RequiredArgsConstructor;
 import numble.karrot.member.domain.Member;
+import numble.karrot.member.domain.MemberImageInit;
 import numble.karrot.product.domain.Product;
 import numble.karrot.product.domain.ProductStatus;
 import numble.karrot.product.repository.ProductRepository;
@@ -28,18 +29,18 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public List<Product> findAllProducts() {
-        return productRepository.findAllProduct();
+    public List<Product> findProductsByStatus(Long memberId, ProductStatus status) {
+        return productRepository.findProductsByStatus(memberId, status);
     }
 
     @Override
     public List<Product> findProductsByMember(Long memberId) {
-        return productRepository.findProductByMember(memberId);
+        return productRepository.findProductsByMember(memberId);
     }
 
     @Override
-    public List<Product> findProductsByStatus(Long memberId, ProductStatus productStatus) {
-        return productRepository.findProductByStatus(memberId, productStatus);
+    public List<Product> findAllProducts() {
+        return productRepository.findAllProduct();
     }
 
     @Override
@@ -50,5 +51,10 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public Product updateProduct(Long id, Product product) {
         return productRepository.updateProduct(id, product);
+    }
+
+    @Override
+    public Product updateProductStatus(Long id, ProductStatus status) {
+        return productRepository.updateProductStatus(id, status);
     }
 }

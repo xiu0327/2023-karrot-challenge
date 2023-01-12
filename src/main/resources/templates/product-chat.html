@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<head>
+    <link
+        rel="stylesheet"
+        type="text/css"
+        th:href="@{/css/components/my-page-chat.css}"/>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Karrot 마켓 클론코딩 챌린지</title>
+</head>
+<body>
+<div class="header">
+    <a th:href="${'/products/list/'+ productId}">목록으로</a>
+    <span style="margin-top: 8px; margin-left: 20px; font-size:25px; font-weight:bold;">이 상품 관련 채팅 목록</span>
+</div>
+<div style="overflow: scroll; width: 100%; height: 500px; background-color:antiquewhite;">
+    <div>
+        <div th:each="room: ${chatList}">
+            <div th:if="${room.buyer.email == userEmail}" class="list-item">
+                <a th:href="@{/chat/room(roomId=room.id)}">
+                    <div style="display: inline-block;">
+                        <img th:src="${room.product.seller.profile}" class="profile" style="width: 60px; height: 60px;"/>
+                        <div th:text="${room.product.seller.nickName}" style="margin-left: 7px;">닉네임</div>
+                    </div>
+                    <div style="margin-left: 30px; margin-top: 20px; margin-right: 70px;">마지막 채팅 내용</div>
+                </a>
+                <div>
+                    <a th:herf="${'/products/list' + room.product.id}">
+                        <img th:src="${room.product.thumbnail}" style="width: 60px; height: 60px; background-color: black;">
+                    </a>
+                    <div th:text="${room.product.status.value}">상품상태</div>
+                </div>
+            </div>
+            <div th:if="${room.product.seller.email == userEmail}" class="list-item">
+                <a th:href="@{/chat/room(roomId=room.id)}">
+                    <div style="display: inline-block;">
+                        <img th:src="${room.buyer.profile}" class="profile" style="width: 60px; height: 60px;"/>
+                        <div th:text="${room.buyer.nickName}" style="margin-left: 7px;">닉네임</div>
+                    </div>
+                    <div style="margin-left: 30px; margin-top: 20px; margin-right: 70px;">마지막 채팅 내용</div>
+                </a>
+                <div>
+                    <a th:herf="${'/products/list' + room.product.id}">
+                        <img th:src="${room.product.thumbnail}" style="width: 60px; height: 60px; background-color: black;">
+                    </a>
+                    <div th:text="${room.product.status.value}">상품상태</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="no-mobile">
+    <span>화면 크기를 줄여주세요</span>
+</div>
+</body>
+</html>

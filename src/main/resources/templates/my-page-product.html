@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <head>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      th:href="@{/css/components/my-page-product.css}"
+    />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Karrot 마켓 클론코딩 챌린지</title>
+  </head>
+  <body>
+    <div class="header-bar">
+      <a class="back" th:href="@{/my-page}">목록으로</a>
+      <span style="margin-left: 10%">판매내역</span>
+    </div>
+    <div class="list">
+      <a th:href="@{/my-page/product?status=TRADE}">판매중</a>
+      <a th:href="@{/my-page/product?status=COMPLETED}">거래완료</a>
+    </div>
+    <div style="overflow: scroll; width: 100%; height: 500px">
+      <div th:each="product: ${products}">
+        <div>
+          <div style="display: flex">
+            <div style="width: 160px; height: 160px">
+              <a th:href="${'/products/list/' + product.id}">
+                <img
+                  th:src="${product.thumbnail}"
+                  style="margin-top: 10px"
+                  width="150px"
+                  height="150px"
+                />
+              </a>
+            </div>
+            <div class="item-info">
+              <p th:text="${product.title}">제목</p>
+              <p th:text="${product.place}">장소</p>
+              <p th:text="${product.price + ' 원'}">가격</p>
+              <div th:if="${#lists.contains(interestByMember, product)}">
+                <a
+                  th:href="@{/interests/delete(productId=${product.id})}"
+                  class="interest"
+                  >💖</a
+                >
+                <span th:if="${product.interestCount > 0}" th:text="${product.interestCount}">하트수</span>
+              </div>
+              <div th:unless="${#lists.contains(interestByMember, product)}">
+                <a
+                  th:href="@{/interests/save(productId=${product.id})}"
+                  class="interest"
+                  >🤍️</a
+                >
+                <span th:if="${product.interestCount > 0}" th:text="${product.interestCount}">하트수</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="status">
+            <a
+              th:if="${status.value == '거래완료'}"
+              th:each="status: ${changeableStatus}"
+              th:href="@{/products/update/status(productId=${product.id}, status=${status})}"
+              th:text="${status.value + '로 변경'}"
+              >거래완료로 변경</a
+            >
+            <a
+              th:unless="${status.value == '거래완료'}"
+              th:each="status: ${changeableStatus}"
+              th:href="@{/products/update/status(productId=${product.id}, status=${status})}"
+              th:text="${status.value + '으로 변경'}"
+              >예약중으로 변경</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="no-mobile">
+      <span>화면 크기를 줄여주세요</span>
+    </div>
+  </body>
+</html>

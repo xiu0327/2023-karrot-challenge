@@ -92,7 +92,8 @@
     </header>
 
     <div class="start-box">
-        <button class="start-button" onclick="location.href='/join'">시작하기</button>
+        <button class="start-button" sec:authorize="isAnonymous()" onclick="location.href='/join'">시작하기</button>
+        <button class="start-button" sec:authorize="isAuthenticated()" onclick="location.href='/products/list'">목록으로</button>
         <p class="login-text">이미 계정이 있나요?</p>
         <a class="login-button" sec:authorize="isAnonymous()" th:href="@{/login}">로그인</a>
         <a class="login-button" sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a>

@@ -6,6 +6,7 @@ import numble.karrot.member.domain.Member;
 import numble.karrot.member.domain.MemberImageInit;
 import numble.karrot.member.domain.MemberRole;
 import numble.karrot.member.repository.MemberRepository;
+import numble.karrot.product.domain.Product;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +15,13 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.annotation.Commit;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 
 import java.io.IOException;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,8 +42,9 @@ class MemberServiceImplTest {
     @Test
     void 회원_가입() {
         //given
+        int before = memberService.findAllMember().size();
         Member member = Member.builder()
-                .email("test2@naver.com")
+                .email("test4@naver.com")
                 .name("서창빈")
                 .nickName("돼끼")
                 .password("12345")
@@ -48,11 +52,11 @@ class MemberServiceImplTest {
                 .memberRole(MemberRole.ROLE_USER)
                 .build();
         //when
-        memberService.join(member);
-        Member checkMember = memberService.findMember(member.getEmail());
+        Member joinMember = memberService.join(member);
         //then
-        assertThat(member).isEqualTo(checkMember);
-        assertThat(checkMember.getProfile()).isEqualTo(MemberImageInit.INIT_URL);
+        List<Member> afterMembers = memberService.findAllMember();
+        assertThat(afterMembers.size()).isEqualTo(before+1);
+        assertThat(joinMember).isIn(afterMembers);
     }
 
     @Test
@@ -102,4 +106,12 @@ class MemberServiceImplTest {
         assertThat(updateMember.getProfile()).isEqualTo(imageUrl);
         assertThat(updateMember).isEqualTo(checkMember);
     }
+
+    @Test
+    void 전체_회원_조회(){
+        List<Member> allMember = memberService.findAllMember();
+        Member member = allMember.get(0);
+        List<Product> otherProducts = member.getOtherProducts();
+    }
+
 }

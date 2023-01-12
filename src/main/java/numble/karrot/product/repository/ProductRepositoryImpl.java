@@ -33,20 +33,6 @@ public class ProductRepositoryImpl implements ProductRepository{
     }
 
     @Override
-    public List<Product> findProductByMember(Long memberId) {
-        return em.createQuery("select p from Product p where p.seller.id= :memberId", Product.class)
-                .setParameter("memberId", memberId)
-                .getResultList();
-    }
-
-    @Override
-    public List<Product> findProductByStatus(Long memberId, ProductStatus status) {
-        return em.createQuery("select p from Product p where p.status= :status", Product.class)
-                .setParameter("status", status)
-                .getResultList();
-    }
-
-    @Override
     public void removeProduct(Product product) {
         em.remove(product);
     }
@@ -56,5 +42,27 @@ public class ProductRepositoryImpl implements ProductRepository{
         Product findProduct = em.find(Product.class, id);
         findProduct.update(product);
         return findProduct;
+    }
+
+    @Override
+    public Product updateProductStatus(Long id, ProductStatus status) {
+        Product findProduct = em.find(Product.class, id);
+        findProduct.setStatus(status);
+        return findProduct;
+    }
+
+    @Override
+    public List<Product> findProductsByStatus(Long memberId, ProductStatus status) {
+        return em.createQuery("select p from Product p where p.seller.id= :memberId and p.status= :status", Product.class)
+                .setParameter("memberId", memberId)
+                .setParameter("status", status)
+                .getResultList();
+    }
+
+    @Override
+    public List<Product> findProductsByMember(Long memberId) {
+        return em.createQuery("select p from Product p where p.seller.id= :memberId", Product.class)
+                .setParameter("memberId", memberId)
+                .getResultList();
     }
 }

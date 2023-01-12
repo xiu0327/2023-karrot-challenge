@@ -4,18 +4,19 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class MemberUpdateRequest {
-    private MultipartFile rowProfile;
+    private MultipartFile profile;
     private String nickName;
 
     @Builder
-    public MemberUpdateRequest(MultipartFile rowProfile, String nickName) {
-        this.rowProfile = rowProfile;
+    public MemberUpdateRequest(@Nullable MultipartFile profile, @Nullable String nickName) {
+        this.profile = profile;
         this.nickName = nickName;
     }
 

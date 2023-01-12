@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import numble.karrot.interest.domain.Interest;
 import numble.karrot.member.domain.Member;
 import numble.karrot.product.domain.Product;
 import numble.karrot.product.domain.ProductCategory;
@@ -20,6 +21,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class ProductDetailsResponse {
+    private Long sellerId;
     private String profile;
     private String nickName;
     private String title;
@@ -33,41 +35,19 @@ public class ProductDetailsResponse {
     private List<Product> otherProducts;
 
     @Builder
-    public ProductDetailsResponse(String profile, String status, String nickName, String title, int price, String category, LocalDateTime date, String content, int interestCount, List<String> productImages, List<Product> otherProducts) {
+    public ProductDetailsResponse(Long sellerId, String profile, String nickName, String title, int price, String category, LocalDateTime date, String status, String content, int interestCount, List<String> productImages, List<Product> otherProducts) {
+        this.sellerId = sellerId;
         this.profile = profile;
-        this.status = status;
         this.nickName = nickName;
         this.title = title;
         this.price = price;
         this.category = category;
         this.date = replaceProductDate(date);
+        this.status = status;
         this.content = content;
         this.interestCount = interestCount;
         this.productImages = productImages;
         this.otherProducts = otherProducts;
-    }
-
-    //테스트용
-    @Override
-    public String toString() {
-        return "ProductDetailsResponse{" +
-                "profile='" + profile + '\'' +
-                ", nickName='" + nickName + '\'' +
-                ", title='" + title + '\'' +
-                ", price=" + price +
-                ", category='" + category + '\'' +
-                ", date='" + date + '\'' +
-                ", interestCount=" + interestCount +
-                ", productImages=" + productImages +
-                ", otherProducts=" + otherProducts +
-                '}';
-    }
-
-    /**
-     * 상품 이미지가 없을 경우, 기본 이미지를 제공
-     * */
-    public void addProductDefaultImage(){
-        productImages.add(ProductDefaultImage.PRODUCT_DEFAULT_IMAGE);
     }
 
     /**

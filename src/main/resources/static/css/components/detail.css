@@ -1,137 +1,194 @@
-    .main{
-        display: flex;
-        flex-direction: column;
-        margin: 5px;
-    }
-    img {
-        width: 300px;
-        height: 300px;
-    }
-    .profile{
-        padding: 20px;
-        margin-left: 25px;
-        width:100%;
-        height:60px;
-    }
-    .profile img{
-        width:45px;
-        height:45px;
-        margin-left:30px;
-        margin-top:7px;
-        margin-right: 10px;
-        border-radius: 70px;
-    }
-    .product-info{
-        padding-left: 20px;
-        margin-left: 60px;
-    }
-    .footer{
-        width:100%;
-        height:60px;
-        text-align:center
-    }
-    .footer .sub1{
-        width:40%;
-        height:60px;
-        float:left;
-        line-height: 90px;
-    }
-    .footer .sub2{
-        width:60%;
-        height:60px;
-        float:right;
-    }
-    .heartBtn {
-        background-color: transparent;
-        border: none;
-        cursor: pointer;
-    }
-    .slider{
-        width: 300px;
-        height: 300px;
-        position: relative;
-        margin: 0 auto;
-        overflow: hidden; /* 현재 슬라이드 오른쪽에 위치한 나머지 슬라이드 들이 보이지 않도록 가림 */
-    }
-    .slider input[type=radio]{
-        display: none;
-    }
-    ul.imgs{
-        padding: 0;
-        margin: 0;
-        list-style: none;
-    }
-    ul.imgs li{
-        position: absolute;
-        left: 500px;
-        transition-delay: 1s; /* 새 슬라이드가 이동해 오는 동안 이전 슬라이드 이미지가 배경이 보이도록 지연 */
+a { text-decoration: none; color: black; }
+a:visited { text-decoration: none; }
+a:hover { text-decoration: none; }
+a:focus { text-decoration: none; }
+a:hover, a:active { text-decoration: none; }
+.header a{
+    background-color: rgb(200, 200, 200);
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+    padding: 5px;
+}
+.main {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+}
+img {
+    width: 300px;
+    height: 300px;
+}
+.profile {
+    display: inline-flex;
+    padding: 10px;
+    padding-left: 40px;
+}
+.profile img {
+    width: 50px;
+    height: 50px;
+    margin-left: 30px;
+    margin-top: 7px;
+    margin-right: 10px;
+    border-radius: 70px;
+}
+.product-info {
+    padding-left: 20px;
+    margin-left: 60px;
+}
+.heartBtn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+.slider {
+    width: 300px;
+    height: 300px;
+    position: relative;
+    margin: 0 auto;
+    overflow: hidden; /* 현재 슬라이드 오른쪽에 위치한 나머지 슬라이드 들이 보이지 않도록 가림 */
+}
+.slider input[type="radio"] {
+    display: none;
+}
+ul.imgs {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+ul.imgs li {
+    position: absolute;
+    left: 500px;
+    transition-delay: 1s; /* 새 슬라이드가 이동해 오는 동안 이전 슬라이드 이미지가 배경이 보이도록 지연 */
 
-        padding: 0;
-        margin: 0;
-    }
-    .bullets{
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        bottom: 20px;
-        z-index: 2;
-    }
-    .bullets label{
-        display: inline-block;
-        border-radius: 50%;
-        background-color: rgba(0,0,0,0.55);
-        width: 20px;
-        height: 20px;
-        cursor: pointer;
-    }
-    /* 현재 선택된 불릿 배경 흰색으로 구분 표시 */
-    .slider input[type=radio]:nth-child(1):checked~.bullets>label:nth-child(1){
-        background-color: rgb(255, 119, 46);
-    }
-    .slider input[type=radio]:nth-child(2):checked~.bullets>label:nth-child(2){
-        background-color: rgb(255, 119, 46);
-    }
-    .slider input[type=radio]:nth-child(3):checked~.bullets>label:nth-child(3){
-        background-color: rgb(255, 119, 46);
-    }
-    .slider input[type=radio]:nth-child(4):checked~.bullets>label:nth-child(4){
-        background-color: rgb(255, 119, 46);
-    }
-    .slider input[type=radio]:nth-child(1):checked~ul.imgs>li:nth-child(1){
-        left: 0;
-        transition: 0.5s;
-        z-index:1;
-    }
-    .slider input[type=radio]:nth-child(2):checked~ul.imgs>li:nth-child(2){
-        left: 0;
-        transition: 0.5s;
-        z-index:1;
-    }
-    .slider input[type=radio]:nth-child(3):checked~ul.imgs>li:nth-child(3){
-        left: 0;
-        transition: 0.5s;
-        z-index:1;
-    }
-    .slider input[type=radio]:nth-child(4):checked~ul.imgs>li:nth-child(4){
-        left: 0;
-        transition: 0.5s;
-        z-index:1;
-    }
+    padding: 0;
+    margin: 0;
+}
+.bullets {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 20px;
+    z-index: 2;
+}
+.bullets label {
+    display: inline-block;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.55);
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+/* 현재 선택된 불릿 배경 흰색으로 구분 표시 */
+.slider
+    input[type="radio"]:nth-child(1):checked
+    ~ .bullets
+    > label:nth-child(1) {
+    background-color: rgb(255, 119, 46);
+}
+.slider
+    input[type="radio"]:nth-child(2):checked
+    ~ .bullets
+    > label:nth-child(2) {
+    background-color: rgb(255, 119, 46);
+}
+.slider
+    input[type="radio"]:nth-child(3):checked
+    ~ .bullets
+    > label:nth-child(3) {
+    background-color: rgb(255, 119, 46);
+}
+.slider
+    input[type="radio"]:nth-child(4):checked
+    ~ .bullets
+    > label:nth-child(4) {
+    background-color: rgb(255, 119, 46);
+}
+.slider
+    input[type="radio"]:nth-child(1):checked
+    ~ ul.imgs
+    > li:nth-child(1) {
+    left: 0;
+    transition: 0.5s;
+    z-index: 1;
+}
+.slider
+    input[type="radio"]:nth-child(2):checked
+    ~ ul.imgs
+    > li:nth-child(2) {
+    left: 0;
+    transition: 0.5s;
+    z-index: 1;
+}
+.slider
+    input[type="radio"]:nth-child(3):checked
+    ~ ul.imgs
+    > li:nth-child(3) {
+    left: 0;
+    transition: 0.5s;
+    z-index: 1;
+}
+.slider
+    input[type="radio"]:nth-child(4):checked
+    ~ ul.imgs
+    > li:nth-child(4) {
+    left: 0;
+    transition: 0.5s;
+    z-index: 1;
+}
+#no-mobile {
+    position: absolute;
+    z-index: 99;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgb(255, 163, 71);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    font-size: 32px;
+}
+
+@media screen and (max-width: 645px) {
     #no-mobile {
-        position: absolute;
-        z-index: 99;
-        height: 100vh;
-        width: 100vw;
-        background-color: rgb(255, 163, 71);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        top: 0;
-        font-size: 32px;
+    display: none;
     }
+}
 
-    @media screen and (max-width:645px){
-        #no-mobile {
-            display: none;
-        }
-    }
+.footer{
+    display: flex;
+    width: 100%;
+    padding-left: 10px;
+    position : absolute;
+    bottom : 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    transition: border-color 0.3s ease-in-out;
+}
+.footer span{
+    font-size: 25px;
+    padding: 10px;
+    margin-top: 10px;
+    margin-left: 20px;
+}
+.chatting{
+    background-color: rgb(255, 163, 71);
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+    margin-left: 20%;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+a { text-decoration: none; color: black; }
+a:visited { text-decoration: none; }
+a:hover { text-decoration: none; }
+a:focus { text-decoration: none; }
+a:hover, a:active { text-decoration: none; }
+.header a{
+    background-color: rgb(200, 200, 200);
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+    padding: 5px;
+}

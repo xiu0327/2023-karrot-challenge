@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+  <head>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      th:href="@{/css/components/modify-profile.css}"
+    />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Karrot 마켓 클론코딩 챌린지</title>
+  </head>
+  <body>
+    <div>
+      <div class="header-bar">
+        <span style="margin-right: 55%; margin-left: 20px">나의 당근</span>
+        <a class="back" href="javascript:history.back(-1)">뒤로가기</a>
+      </div>
+    </div>
+    <div>
+      <div class="update-profile">
+        <img th:src="${member.profile}" />
+      </div>
+      <form
+        th:action="@{/my-page/profile}"
+        th:object="${form}"
+        class="modify-form"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <input type="file" th:field="*{profile}" multiple />
+        <input
+          type="text"
+          th:field="*{nickName}"
+          th:placeholder="${member.nickName}"
+        />
+        <input type="submit" value="완료" />
+      </form>
+    </div>
+    <div id="no-mobile">
+      <span>화면 크기를 줄여주세요</span>
+    </div>
+  </body>
+</html>

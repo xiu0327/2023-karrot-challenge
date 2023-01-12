@@ -18,8 +18,10 @@ public interface ProductRepository {
     Product save(Product product);
     Product findProductById(Long id);
     List<Product> findAllProduct();
-    List<Product> findProductByMember(Long memberId);
-    List<Product> findProductByStatus(Long memberId, ProductStatus status);
+
     void removeProduct(Product product);
     Product updateProduct(Long id, Product product);
+    Product updateProductStatus(Long id, ProductStatus status);
+    List<Product> findProductsByStatus(Long memberId, ProductStatus status);
+    List<Product> findProductsByMember(Long memberId);
 }

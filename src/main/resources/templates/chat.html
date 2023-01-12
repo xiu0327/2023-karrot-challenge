@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+  <head>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      th:href="@{/css/components/chat.css}"
+    />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Karrot 마켓 클론코딩 챌린지</title>
+  </head>
+  <body>
+    <div id="chat-page">
+      <div class="chat-container">
+        <div class="chat-header">
+          <div>
+            <img
+              th:src="${product.thumbnail}"
+              style="width: 45px; height: 45px; margin: 8px"
+            />
+          </div>
+          <div style="margin-left: 10px; font-size: 18px">
+            <div th:text="${product.status.value}">상품상태</div>
+            <div th:text="${product.price}">가격</div>
+          </div>
+        </div>
+        <div style="overflow: scroll; width: 100%; height: 500px">
+          <ul id="messageArea">
+            <div th:each="chat: ${chatList}">
+              <li class="chat-message">
+                <img
+                  th:src="${chat.profile}"
+                  style="background-color: #128ff2"
+                />
+                <span th:text="${chat.nickname}">닉네임</span>
+                <p th:text="${chat.content}">메시지</p>
+              </li>
+            </div>
+          </ul>
+        </div>
+        <form id="messageForm">
+          <div class="form-group">
+            <div class="input-group clearfix">
+              <input
+                type="text"
+                id="message"
+                autocomplete="off"
+                class="form-control"
+              />
+              <button type="submit" id="send-btn" class="primary">
+                보내기
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div id="no-mobile">
+      <span>화면 크기를 줄여주세요</span>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <script th:inline="javascript">
+      $(document).ready(function() {
+          var roomId = [[${roomId}]];
+          var nickname = [[${nickname}]];
+          var profile = [[${profile}]]
+
+          var sockJS = new SockJS("/ws");
+          var stomp = Stomp.over(sockJS);
+
+          stomp.connect({}, function (){
+              console.log("STOMP Connection");
+
+              stomp.subscribe("/sub/chat/room/" + roomId, function(chat){
+                  var content = JSON.parse(chat.body);
+                  if(content.type != "JOIN"){
+                      var nickname = content.nickname;
+                      var profile = content.profile;
+                      var message = content.content;
+
+                      var result = '';
+
+                      result = '<li class="chat-message">';
+                      result += '<img src="' + profile +'" style="background-color: #128ff2;"/>';
+                      result += '<span>' + nickname + '</span>';
+                      result += '<p>' + message + '</p>';
+
+                      $("#messageArea").append(result);
+                  }
+              });
+
+              stomp.send('/pub/chat/enter', {}, JSON.stringify(
+                  {
+                      roomId: roomId,
+                      type: "JOIN",
+                      profile: profile,
+                      nickname: nickname
+                  }
+              ));
+          });
+
+          $("#send-btn").on("click", function(e){
+
+              event.preventDefault();
+
+              var msg = document.getElementById("message");
+
+              console.log(nickname + ":" + msg.value);
+              stomp.send('/pub/chat/send', {}, JSON.stringify({
+                  roomId: roomId,
+                  type: "MESSAGE",
+                  profile: profile,
+                  nickname: nickname,
+                  content: msg.value
+              }));
+              msg.value = '';
+          });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<head>
+    <link
+    rel="stylesheet"
+    type="text/css"
+    th:href="@{/css/components/mypage.css}"/>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Karrot 마켓 클론코딩 챌린지</title>
+</head>
+<body>
+    <div>
+        <div class="header-bar">
+            <span style="margin-right: 55%; margin-left: 20px;">나의 당근</span>
+            <a class="back" href="javascript:history.back(-1)">뒤로가기</a>
+        </div>
+    </div>
+    <div>
+        <div class="profile">
+            <img th:src="${member.profile}" style="background-color: black;"/>
+            <div th:text="${member.nickName}" style="margin-left: 10px; margin-top: 35px;">닉네임</얄>
+        </div>
+    </div>
+    <div style="margin-left: 40px; margin-bottom: 30px;">
+        <a th:href="@{/my-page/profile}" class="profile-modify">프로필 수정</a>
+    </div>
+    <div class="list">
+        <div class="list-child">
+            <span style="margin-right: 25%;">🐻‍❄️</span>
+            <a th:href="@{/my-page/product?status=TRADE}">판매내역</a>
+        </div>
+        <div class="list-child">
+            <span style="margin-right: 25%;">🐼</span>
+            <a th:href="@{/my-page/interest/all}">관심목록</a>
+        </div>
+        <div class="list-child">
+            <span style="margin-right: 25%;">🐰</span>
+            <a th:href="@{/my-page/chat}">채팅목록</a>
+        </div>
+        <div style="margin-top: 60px; margin-left: 10px;">
+            <a class="logout" th:href="@{/logout}">Log out</a>
+        </div>
+    </div>
+    <div class="footer">
+    <div style="margin-right: 50px">
+        <a th:href="@{/products/list}" style="font-size: 50px">🏠</a>
+        <p style="margin: auto; padding-left: 15px">홈</p>
+    </div>
+    <div>
+        <a
+        th:href="@{/members/mypage}"
+        style="margin-left: 15px; font-size: 50px"
+        >🥕</a
+        >
+        <p style="margin: auto">나의 당근</p>
+    </div>
+    </div>    
+    <div id="no-mobile">
+        <span>화면 크기를 줄여주세요</span>
+</body>
+</html>

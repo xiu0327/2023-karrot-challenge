@@ -27,12 +27,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Member findMember = memberRepository.findMemberByEmail(email);
 
         HashSet<GrantedAuthority> authorities = new HashSet<>();
-        if("admin".equals(email)){
-            authorities.add(new SimpleGrantedAuthority(MemberRole.ROLE_ADMIN.getValue()));
-        } else{
-            authorities.add(new SimpleGrantedAuthority(MemberRole.ROLE_USER.getValue()));
-        }
-
+        authorities.add(new SimpleGrantedAuthority(MemberRole.ROLE_USER.getValue()));
         return new User(findMember.getEmail(), findMember.getPassword(), authorities);
     }
 }

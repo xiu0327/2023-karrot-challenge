@@ -38,9 +38,12 @@
   }
   .footer{
     display: flex;
-    margin-left: 30%;
+    width: 100%;
+    padding-left: 30%;
     position : absolute;
     bottom : 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    transition: border-color 0.3s ease-in-out;
   }
   .interest_cnt{
     font-size: 12px;
@@ -84,7 +87,7 @@
     font-size: 13px;
    }
    .interest_a{
-    background-color: rgb(255, 163, 71);
+    background-color: gray;
     cursor: pointer;
     border-radius: 5px;
     border: none;

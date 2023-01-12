@@ -9,7 +9,6 @@
       type="text/css"
       th:href="@{/css/components/list.css}"
     />
-    <link rel="stylesheet" type="text/css" href="css/components/list.css" />
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -38,13 +37,37 @@
             <p th:text="${product.place}">장소</p>
             <p th:text="${product.price + ' 원'}">가격</p>
             <p th:text="${product.status.value}">상품 상태</p>
-            <div style="margin-bottom: 10px;" th:if="${#lists.contains(interestByMember, product)}">
-              <span style="margin-right: 20px; font-size: 15px;" th:text="${'❤️ : ' + product.interestCount}">하트수</span>
-              <a class="interest_a" th:href="@{/interests/delete(productId=${product.id})}">관심 목록 삭제</a>
+            <div
+              style="margin-bottom: 10px"
+              th:if="${#lists.contains(interestByMember, product)}"
+            >
+              <a
+                class="interest_a"
+                th:href="@{/interests/delete(productId=${product.id})}"
+                >💖</a
+              >
+              <span
+                style="margin-left: 20px; font-size: 15px"
+                th:if="${product.interestCount > 0}"
+                th:text="${product.interestCount}"
+                >하트수</span
+              >
             </div>
-            <div th:unless="${#lists.contains(interestByMember, product)}">
-              <span style="margin-right: 20px; font-size: 15px;" th:text="${'🤍️ : ' + product.interestCount}">하트수</span>
-              <a class="interest_a" th:href="@{/interests/save(productId=${product.id})}">관심 목록 추가</a>
+            <div
+              style="margin-bottom: 10px"
+              th:unless="${#lists.contains(interestByMember, product)}"
+            >
+              <a
+                class="interest_a"
+                th:href="@{/interests/save(productId=${product.id})}"
+                >🤍️</a
+              >
+              <span
+                style="margin-left: 20px; font-size: 15px"
+                th:if="${product.interestCount > 0}"
+                th:text="${product.interestCount}"
+                >하트수</span
+              >
             </div>
           </div>
         </div>
@@ -55,9 +78,7 @@
           <p style="margin: auto; padding-left: 15px">홈</p>
         </div>
         <div>
-          <a
-            th:href="@{/members/mypage}"
-            style="margin-left: 15px; font-size: 50px"
+          <a th:href="@{/my-page}" style="margin-left: 15px; font-size: 50px"
             >🥕</a
           >
           <p style="margin: auto">나의 당근</p>

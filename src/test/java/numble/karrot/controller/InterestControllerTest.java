@@ -1,6 +1,8 @@
 package numble.karrot.controller;
 
 import numble.karrot.interest.service.InterestService;
+import numble.karrot.member.domain.Member;
+import numble.karrot.member.service.MemberService;
 import numble.karrot.product.domain.Product;
 import numble.karrot.product.service.ProductService;
 import org.junit.Before;
@@ -42,6 +44,9 @@ class InterestControllerTest {
     private WebApplicationContext context;
 
     @Autowired
+    private MemberService memberService;
+
+    @Autowired
     MockMvc mvc;
 
     @Before
@@ -54,9 +59,10 @@ class InterestControllerTest {
 
     @Test
     void 관심목록_저장() throws Exception{
-        Product product = productService.findAllProducts().get(0);
+        Product product = productService.findAllProducts().get(3);
         mvc.perform(get("/interests/save?productId=" + product.getId()))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful());
     }
+
 }

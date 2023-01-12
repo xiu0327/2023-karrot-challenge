@@ -39,6 +39,7 @@ public class MemberJoinRequest {
                 .name(this.name)
                 .phone(this.phone)
                 .memberRole(MemberRole.ROLE_USER)
+
                 .build();
     }
 

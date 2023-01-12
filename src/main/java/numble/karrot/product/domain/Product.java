@@ -3,6 +3,7 @@ package numble.karrot.product.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import numble.karrot.chat.domain.ChatRoom;
 import numble.karrot.member.domain.Member;
 import numble.karrot.product_image.domain.ProductImage;
 
@@ -52,14 +53,18 @@ public class Product {
     @Column(name = "content")
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "member_id")
     private Member seller;
 
     @Column(name = "thumbnail")
     private String thumbnail;
-    @Transient
-    List<ProductImage> productImages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    List<ProductImage> joinProductImages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    List<ChatRoom> roomList = new ArrayList<>();
 
     @Builder
     public Product(String title, String category, String place, int price, ProductStatus status, int interestCount, int chattingCount, ZonedDateTime date, String content, Member seller) {
@@ -75,16 +80,16 @@ public class Product {
         this.seller = seller;
     }
 
-    // 상품 이미지 등록 및 썸네일 등록
-    public void setProductImages(List<ProductImage> productImages) {
-        this.thumbnail = productImages.get(0).getUrl();
-        this.productImages = productImages;
-    }
-
-    //상품 상태 변경
+    // 상품 상태 변경
     public void setStatus(ProductStatus status) {
         this.status = status;
     }
+
+    // 썸네일 등록
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
 
     //상품 정보 변경
     public Product update(Product product){
@@ -92,7 +97,6 @@ public class Product {
         this.price = product.getPrice();
         this.content = product.getContent();
         this.category = product.getCategory();
-        this.productImages = product.getProductImages();
         return this;
     }
 
@@ -116,10 +120,4 @@ public class Product {
         this.chattingCount--;
     }
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                "productImages=" + productImages +
-                '}';
-    }
 }

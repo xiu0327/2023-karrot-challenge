@@ -3,15 +3,24 @@ package numble.karrot.interest.service;
 import numble.karrot.exception.DuplicateInterestExistsException;
 import numble.karrot.interest.domain.Interest;
 import numble.karrot.member.domain.Member;
+import numble.karrot.member.dto.MemberJoinRequest;
 import numble.karrot.member.service.MemberService;
 import numble.karrot.product.domain.Product;
+import numble.karrot.product.domain.ProductCategory;
+import numble.karrot.product.dto.ProductRegisterRequest;
 import numble.karrot.product.service.ProductService;
 import org.assertj.core.api.Assertions;
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.repository.support.JpaEntityInformation;
+import org.springframework.data.jpa.repository.support.JpaEntityInformationSupport;
+import org.springframework.test.annotation.Commit;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import java.util.List;
@@ -43,17 +52,30 @@ class InterestServiceImplTest {
     EntityManager em;
 
     @Test
-    void 관심_목록_추가_성공() {
+    void 하트_누르기_성공() {
         // given
-        Product product = productService.findAllProducts().get(0);
-        Member member = memberService.findMember("test@naver.com");
+        Member member = memberService.join(MemberJoinRequest.builder()
+                .email("test5@naver.com")
+                .name("서창빈")
+                .nickname("돼끼")
+                .password("12345")
+                .phone("010-1234-5678")
+                .build().toMemberEntity());
+        Member seller = memberService.findMember("test@naver.com");
+        Product product = productService.save(ProductRegisterRequest.builder()
+                .title("제목")
+                .category(ProductCategory.BEAUTY.getValue())
+                .price(100)
+                .content("내용")
+                .build().toProductEntity(seller));
         // when
         interestService.addInterestList(Interest.builder()
                 .member(member)
                 .product(product).build());
+        Product productDetails = productService.findProductDetails(product.getId());
         // then
         List<Product> interestByMember = interestService.findInterestByMember(member);
-        assertThat(product).isIn(interestByMember);
+        assertThat(productDetails).isIn(interestByMember);
     }
 
     /**
@@ -62,14 +84,24 @@ class InterestServiceImplTest {
     @Test
     void 관심_목록_추가_실패(){
         // given
-        Product product = productService.findAllProducts().get(0);
-        Member member = memberService.findMember("test@naver.com");
-
-        Interest interest = Interest.builder()
-                .member(member)
-                .product(product).build();
+        Member member = memberService.join(MemberJoinRequest.builder()
+                .email("test5@naver.com")
+                .name("서창빈")
+                .nickname("돼끼")
+                .password("12345")
+                .phone("010-1234-5678")
+                .build().toMemberEntity());
+        Member seller = memberService.findMember("test@naver.com");
+        Product product = productService.save(ProductRegisterRequest.builder()
+                .title("제목")
+                .category(ProductCategory.BEAUTY.getValue())
+                .price(100)
+                .content("내용")
+                .build().toProductEntity(seller));
         // when
-        interestService.addInterestList(interest);
+        Interest interest = interestService.addInterestList(Interest.builder()
+                .member(member)
+                .product(product).build());
         // then
         assertThrows(DuplicateInterestExistsException.class, ()-> interestService.addInterestList(interest));
     }
@@ -77,20 +109,29 @@ class InterestServiceImplTest {
     @Test
     void 관심_목록_삭제_성공(){
         // given
-        Product product = productService.findAllProducts().get(0);
-        Member member = memberService.findMember("test@naver.com");
-
-        Interest interest = Interest.builder()
+        Member member = memberService.join(MemberJoinRequest.builder()
+                .email("test5@naver.com")
+                .name("서창빈")
+                .nickname("돼끼")
+                .password("12345")
+                .phone("010-1234-5678")
+                .build().toMemberEntity());
+        Member seller = memberService.findMember("test@naver.com");
+        Product product = productService.save(ProductRegisterRequest.builder()
+                .title("제목")
+                .category(ProductCategory.BEAUTY.getValue())
+                .price(100)
+                .content("내용")
+                .build().toProductEntity(seller));
+        interestService.addInterestList(Interest.builder()
                 .member(member)
-                .product(product).build();
-
-        int before = interestService.addInterestList(interest).getProduct().getInterestCount();
+                .product(product).build());
+        int before = interestService.findInterestByMember(member).size();
         // when
         interestService.deleteInterestByProductList(product, member);
-        int after = productService.findProductDetails(product.getId()).getInterestCount();
+        int after = interestService.findInterestByMember(member).size();
         // then
         assertThat(after).isNotEqualTo(before);
         assertThat(after).isEqualTo(before-1);
     }
-
 }

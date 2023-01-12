@@ -7,6 +7,7 @@ import numble.karrot.exception.MemberNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -23,18 +24,16 @@ public class MemberRepositoryJpaImpl implements MemberRepository{
     }
 
     @Override
-    public Member findMemberById(Long memberId) {
-        Member member = em.find(Member.class, memberId);
-        return member;
-    }
-
-    @Override
     public Member findMemberByEmail(String email) {
+        /**
+         * "select m,i from Member m left join m.interestList i where i.member.id = m.id"
+         */
         return em.createQuery("select m from Member m where m.email= :email", Member.class)
                 .setParameter("email", email)
                 .getResultList()
                 .stream().findAny()
                 .orElseThrow(() -> new MemberNotFoundException());
+
     }
 
     @Override
@@ -54,6 +53,12 @@ public class MemberRepositoryJpaImpl implements MemberRepository{
     @Override
     public void removeMember(Member member) {
         em.remove(member);
+    }
+
+    @Override
+    public List<Member> findAllMember() {
+        return em.createQuery("select m from Member m", Member.class)
+                .getResultList();
     }
 
     public Boolean existMemberCheck(String email){

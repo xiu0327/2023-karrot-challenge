@@ -29,6 +29,7 @@ public class ProductImageRepositoryImpl implements ProductImageRepository{
 
     @Override
     public void removeProductImage(Long id) {
-        em.remove(id);
+        ProductImage productImage = em.find(ProductImage.class, id);
+        em.remove(productImage);
     }
 }

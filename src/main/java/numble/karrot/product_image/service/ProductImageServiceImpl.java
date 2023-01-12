@@ -4,8 +4,11 @@ import lombok.RequiredArgsConstructor;
 import numble.karrot.aws.S3Uploader;
 import numble.karrot.image.ImageStorageFolderName;
 import numble.karrot.product.domain.Product;
+import numble.karrot.product.service.ProductService;
 import numble.karrot.product_image.domain.ProductImage;
 import numble.karrot.product_image.repository.ProductImageRepository;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,10 +45,13 @@ public class ProductImageServiceImpl implements ProductImageService{
     }
 
     @Override
-    public ProductImage deleteProductImage(ProductImage productImage) {
-        productImageRepository.removeProductImage(productImage.getId());
-        return productImage;
+    public void deleteProductImage(List<ProductImage> productImages) {
+        for (ProductImage image : productImages) {
+            productImageRepository.removeProductImage(image.getId());
+        }
     }
+
+
     @Override
     public ProductImage convert(MultipartFile multipartFile, Product product) throws IOException{
         String url = s3Uploader.getImageUrl(multipartFile, ImageStorageFolderName.PRODUCT_IMAGE_PATH);

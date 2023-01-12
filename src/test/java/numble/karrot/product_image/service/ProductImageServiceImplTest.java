@@ -31,8 +31,18 @@ class ProductImageServiceImplTest {
         Product product = productService.findAllProducts().get(0);
         //when
         List<ProductImage> productImages = productImageService.findProductImages(product);
-        product.setProductImages(productImages);
+        product.setThumbnail(productImages.get(0).getUrl());
         //then
-        assertThat(product.getProductImages()).isNotNull();
+        assertThat(product.getJoinProductImages()).isNotNull();
     }
+
+    @Test
+    void deleteProductImage(){
+        Product product = productService.findProductDetails(1L);
+        List<ProductImage> joinProductImages = product.getJoinProductImages();
+        productImageService.deleteProductImage(joinProductImages);
+        List<ProductImage> productImages = productImageService.findProductImages(product);
+        assertThat(productImages).isEmpty();
+    }
+
 }

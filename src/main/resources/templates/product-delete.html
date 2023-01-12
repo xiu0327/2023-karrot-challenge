@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Karrot 마켓 클론코딩 챌린지</title>
+</head>
+<body>
+<h1>정말 삭제하시겠습니까?</h1>
+<a href="javascript:history.back(-1)">뒤로가기</a>
+<a style="margin-left: 20px;" th:href="@{/products/delete(productId=${productId})}">삭제</a>
+</body>
+</html>
