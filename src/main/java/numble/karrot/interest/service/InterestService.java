@@ -16,6 +16,5 @@ import java.util.List;
 public interface InterestService {
     List<Product> findInterestByMember(Member member);
     Interest addInterestList(Interest interest);
-    void deleteInterestByMember(Interest interest);
-    void deleteInterestByProductList(Product product, Member member);
+    void deleteInterestByProductList(Long productId, Long memberId);
 }

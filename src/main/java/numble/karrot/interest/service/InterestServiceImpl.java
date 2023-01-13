@@ -34,22 +34,14 @@ public class InterestServiceImpl implements InterestService{
     }
 
     /**
-     * 특정 회원 관심 목록에서 하트 취소를 누르는 경우
-     * @param interest 하트 취소 대상
-     */
-    @Override
-    public void deleteInterestByMember(Interest interest) {
-        interestRepository.delete(interest);
-    }
-
-    /**
      * 전체 상품 목록(그외 등등)에서 하트 취소를 누르는 경우
-     * @param product 하트 취소를 누른 상품 정보 (상품의 하트수를 감소하기 위해)
-     * @param member 하트 취소를 누른 행위자 (회원 관심 목록에서 제거하기 위해)
+     * @param productId 하트 취소를 누른 상품 정보 (상품의 하트수를 감소하기 위해)
+     * @param memberId 하트 취소를 누른 행위자 (회원 관심 목록에서 제거하기 위해)
      */
     @Override
-    public void deleteInterestByProductList(Product product, Member member) {
-        Interest interest = interestRepository.findInterestByMemberAndProduct(product, member);
+    public void deleteInterestByProductList(Long productId, Long memberId) {
+        Interest interest = interestRepository.findInterestByMemberAndProduct(productId, memberId);
+        interest.reduceProductInterestCount();
         interestRepository.delete(interest);
     }
 

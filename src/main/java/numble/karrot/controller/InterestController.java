@@ -52,11 +52,9 @@ public class InterestController {
     public String delete(@AuthenticationPrincipal UserDetails userDetails, @RequestParam("productId") Long productId, Model model){
         // 1. 회원 정보 SELECT
         Member member = memberService.findMember((userDetails.getUsername()));
-        // 2. 관심 목록에서 삭제할 판매 상품 정보 조회 SELECT
-        Product product = productService.findProductDetails(productId);
-        // 3. 관심 목록에서 삭제 DELETE
-        interestService.deleteInterestByProductList(product, member);
-        // 4. View 속성값 등록
+        // 2. 관심 목록에서 삭제 DELETE
+        interestService.deleteInterestByProductList(productId, member.getId());
+        // 3. View 속성값 등록
         model.addAttribute("state", "삭제");
         return "interest-save-and-delete";
     }

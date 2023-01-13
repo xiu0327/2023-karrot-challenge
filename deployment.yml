@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-api-deploy
+spec:
+  selector:
+    matchLabels:
+      app: spring-api-deploy
+  template:
+    metadata:
+      labels:
+        app: spring-api-deploy
+    spec:
+      containers:
+        - name: spring-api
+          image: xiu0327/karrot
+          ports:
+            - containerPort: 8080

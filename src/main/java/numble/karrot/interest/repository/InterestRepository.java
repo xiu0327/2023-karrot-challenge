@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface InterestRepository {
     List<Interest> findInterestsByMember(Member member);
-    Interest findInterestByMemberAndProduct(Product product, Member member);
+    Interest findInterestByMemberAndProduct(Long productId, Long memberId);
     Interest create(Interest interest);
     void delete(Interest interest);
 }

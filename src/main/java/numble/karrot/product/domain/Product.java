@@ -38,7 +38,7 @@ public class Product {
     private int price;
 
     @Column(name = "status")
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private ProductStatus status;
 
     @Column(name = "interest_count")
@@ -53,17 +53,17 @@ public class Product {
     @Column(name = "content")
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member seller;
 
     @Column(name = "thumbnail")
     private String thumbnail;
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product")
     List<ProductImage> joinProductImages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product")
     List<ChatRoom> roomList = new ArrayList<>();
 
     @Builder

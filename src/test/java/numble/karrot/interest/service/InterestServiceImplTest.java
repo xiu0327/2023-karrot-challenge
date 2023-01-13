@@ -128,7 +128,7 @@ class InterestServiceImplTest {
                 .product(product).build());
         int before = interestService.findInterestByMember(member).size();
         // when
-        interestService.deleteInterestByProductList(product, member);
+        interestService.deleteInterestByProductList(product.getId(), member.getId());
         int after = interestService.findInterestByMember(member).size();
         // then
         assertThat(after).isNotEqualTo(before);

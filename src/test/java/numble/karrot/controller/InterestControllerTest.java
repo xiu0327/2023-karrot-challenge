@@ -1,5 +1,6 @@
 package numble.karrot.controller;
 
+import numble.karrot.interest.domain.Interest;
 import numble.karrot.interest.service.InterestService;
 import numble.karrot.member.domain.Member;
 import numble.karrot.member.service.MemberService;
@@ -59,8 +60,24 @@ class InterestControllerTest {
 
     @Test
     void 관심목록_저장() throws Exception{
-        Product product = productService.findAllProducts().get(3);
+        Product product = productService.findProductDetails(1L);
+        System.out.println("InterestControllerTest.관심목록_저장");
         mvc.perform(get("/interests/save?productId=" + product.getId()))
+                .andDo(print())
+                .andExpect(status().is2xxSuccessful());
+    }
+
+    @Test
+    void 관심목록_삭제() throws Exception{
+        // 1. 회원 정보 조회
+        Member member = memberService.findMember("test@naver.com");
+        Product product = productService.findProductDetails(1L);
+        // 2. 관심 목록 저장
+        interestService.addInterestList(Interest.builder()
+                .member(member)
+                .product(product).build());
+        System.out.println("InterestControllerTest.관심목록_삭제");
+        mvc.perform(get("/interests/delete?productId="+ product.getId()))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful());
     }

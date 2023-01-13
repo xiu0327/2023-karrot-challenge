@@ -34,10 +34,10 @@ public class InterestRepositoryImpl implements InterestRepository{
     }
 
     @Override
-    public Interest findInterestByMemberAndProduct(Product product, Member member) {
+    public Interest findInterestByMemberAndProduct(Long productId, Long memberId) {
         return em.createQuery("select i from Interest i where i.member.id= :memberId and i.product.id= :productId", Interest.class)
-                .setParameter("memberId", member.getId())
-                .setParameter("productId", product.getId())
+                .setParameter("memberId", memberId)
+                .setParameter("productId", productId)
                 .getResultList().stream().findAny()
                 .orElseThrow(() -> new InterestNotFoundException());
     }
@@ -52,9 +52,7 @@ public class InterestRepositoryImpl implements InterestRepository{
 
     @Override
     public void delete(Interest interest) {
-        Interest findInterest = em.find(Interest.class, interest.getId());
-        findInterest.reduceProductInterestCount();
-        em.remove(findInterest);
+        em.remove(interest);
     }
 
     private void checkDuplicate(Interest interest){

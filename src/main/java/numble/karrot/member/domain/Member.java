@@ -48,10 +48,10 @@ public class Member {
     @Column(name = "profile")
     private String profile;
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "member")
     private List<Interest> interestList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "seller", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "seller")
     private List<Product> otherProducts = new ArrayList<>();
 
     @Builder
