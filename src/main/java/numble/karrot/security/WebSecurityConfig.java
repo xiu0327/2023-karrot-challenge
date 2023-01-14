@@ -50,11 +50,11 @@ public class WebSecurityConfig {
                 )
                 .exceptionHandling()
                 .accessDeniedPage("/error");
-//        http
-//                .rememberMe()
-//                    .tokenValiditySeconds(3600*24*30)
-//                    .alwaysRemember(true)
-//                    .userDetailsService(userDetailsService);
+        http
+                .rememberMe()
+                    .tokenValiditySeconds(3600*24*30)
+                    .alwaysRemember(true)
+                    .userDetailsService(userDetailsService);
         return http.build();
     }
 

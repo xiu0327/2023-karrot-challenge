@@ -2,6 +2,7 @@ package numble.karrot.product.repository;
 
 import numble.karrot.product.domain.Product;
 import numble.karrot.product.domain.ProductStatus;
+import numble.karrot.product_image.domain.ProductImage;
 
 import java.util.List;
 
@@ -18,10 +19,10 @@ public interface ProductRepository {
     Product save(Product product);
     Product findProductById(Long id);
     List<Product> findAllProduct();
-
-    void removeProduct(Product product);
+    void removeProduct(Long productId);
     Product updateProduct(Long id, Product product);
     Product updateProductStatus(Long id, ProductStatus status);
     List<Product> findProductsByStatus(Long memberId, ProductStatus status);
     List<Product> findProductsByMember(Long memberId);
+    Product updateThumbnail(List<ProductImage> images, Long productId);
 }

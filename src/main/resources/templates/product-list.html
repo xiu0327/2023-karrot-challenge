@@ -20,7 +20,7 @@
         <span th:text="${nickname} + '님 동네'">개발자님 동네</span>
         <a class="register" th:href="@{/products/register}">상품 등록</a>
       </div>
-      <div style="overflow: scroll; width: 100%; height: 500px">
+      <div style="overflow: scroll; width: 100%; height: 600px">
         <div th:each="product: ${productList}">
           <div class="div2">
             <a th:href="${'/products/list/' + product.id}">

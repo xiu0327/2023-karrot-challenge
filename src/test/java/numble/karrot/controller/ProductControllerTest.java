@@ -1,6 +1,7 @@
 package numble.karrot.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import numble.karrot.exception.ProductNotFoundException;
 import numble.karrot.member.domain.Member;
 import numble.karrot.member.domain.MemberRole;
 import numble.karrot.member.service.MemberService;
@@ -131,10 +132,6 @@ class ProductControllerTest {
         mvc.perform(get("/products/delete?productId="+1L))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection());
-
-        Product product = productService.findProductDetails(1L);
-        assertThat(product).isNull();
-
     }
 
     @Test

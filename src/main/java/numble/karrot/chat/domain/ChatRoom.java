@@ -41,9 +41,4 @@ public class ChatRoom {
     }
 
 
-
-    public Long checkId(){
-        if(this.id == null){return 0L;}
-        return this.getId();
-    }
 }

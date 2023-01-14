@@ -86,8 +86,9 @@ public class Product {
     }
 
     // 썸네일 등록
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
+    public void setThumbnail(List<ProductImage> productImages) {
+        this.thumbnail = productImages.get(0).getUrl();
+        this.joinProductImages = productImages;
     }
 
 

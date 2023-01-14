@@ -14,10 +14,10 @@
 <body>
     <div class="header">
         <a href="/products/list" style="margin-right: 10px">목록으로</a>
-        <a th:href="@{/products/delete/check(productId=${checkProduct.id})}" style="margin-left: 30%;">상품 삭제</a>
-        <a th:href="@{/products/update(productId=${checkProduct.id})}">상품 수정</a>
+        <a th:if="${memberId == checkProduct.seller.id}" th:href="@{/products/delete/check(productId=${checkProduct.id})}" style="margin-left: 30%;">상품 삭제</a>
+        <a th:if="${memberId == checkProduct.seller.id}" th:href="@{/products/update(productId=${checkProduct.id})}">상품 수정</a>
     </div>
-    <div style="margin-top:10px; overflow: scroll; width: 100%; height: 550px">
+    <div style="margin-top:10px; overflow: scroll; width: 100%; height: 600px">
         <div class="slider">
             <input
             type="radio"

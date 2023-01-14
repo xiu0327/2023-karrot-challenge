@@ -6,6 +6,7 @@ import numble.karrot.member.domain.MemberImageInit;
 import numble.karrot.product.domain.Product;
 import numble.karrot.product.domain.ProductStatus;
 import numble.karrot.product.repository.ProductRepository;
+import numble.karrot.product_image.domain.ProductImage;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -39,13 +40,18 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    public Product updateThumbnail(List<ProductImage> images, Long productId) {
+        return productRepository.updateThumbnail(images, productId);
+    }
+
+    @Override
     public List<Product> findAllProducts() {
         return productRepository.findAllProduct();
     }
 
     @Override
-    public void deleteProduct(Product product) {
-        productRepository.removeProduct(product);
+    public void deleteProduct(Long productId) {
+        productRepository.removeProduct(productId);
     }
 
     @Override

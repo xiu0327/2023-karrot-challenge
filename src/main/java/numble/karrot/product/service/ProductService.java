@@ -3,6 +3,7 @@ package numble.karrot.product.service;
 
 import numble.karrot.product.domain.Product;
 import numble.karrot.product.domain.ProductStatus;
+import numble.karrot.product_image.domain.ProductImage;
 
 import java.util.List;
 
@@ -19,9 +20,10 @@ public interface ProductService {
     Product save(Product product);
     Product findProductDetails(Long id);
     List<Product> findAllProducts();
-    void deleteProduct(Product product);
+    void deleteProduct(Long productId);
     Product updateProduct(Long id, Product product);
     Product updateProductStatus(Long id, ProductStatus status);
     List<Product> findProductsByStatus(Long memberId, ProductStatus status);
     List<Product> findProductsByMember(Long memberId);
+    Product updateThumbnail(List<ProductImage> images, Long productId);
 }

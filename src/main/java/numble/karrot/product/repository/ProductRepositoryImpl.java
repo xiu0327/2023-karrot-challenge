@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import numble.karrot.product.domain.Product;
 import numble.karrot.product.domain.ProductStatus;
 import numble.karrot.exception.ProductNotFoundException;
+import numble.karrot.product_image.domain.ProductImage;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -33,7 +34,8 @@ public class ProductRepositoryImpl implements ProductRepository{
     }
 
     @Override
-    public void removeProduct(Product product) {
+    public void removeProduct(Long productId) {
+        Product product = em.find(Product.class, productId);
         em.remove(product);
     }
 
@@ -64,5 +66,12 @@ public class ProductRepositoryImpl implements ProductRepository{
         return em.createQuery("select p from Product p where p.seller.id= :memberId", Product.class)
                 .setParameter("memberId", memberId)
                 .getResultList();
+    }
+
+    @Override
+    public Product updateThumbnail(List<ProductImage> images, Long productId) {
+        Product product = em.find(Product.class, productId);
+        product.setThumbnail(images);
+        return product;
     }
 }

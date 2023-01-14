@@ -88,17 +88,16 @@ public class ProductController {
      * */
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.FOUND)
-    @Transactional
     public String register(@AuthenticationPrincipal UserDetails userDetails, @ModelAttribute ProductRegisterRequest form, RedirectAttributes redirectAttributes) throws IOException {
         // 1. 판매자 정보 SELECT
         Member seller = memberService.findMember(userDetails.getUsername());
         // 2. 상품 등록 요청 DTO 를 Entity 로 변환
         Product registerProduct = form.toProductEntity(seller);
-        // 3. 상품 이미지 DB 등록 INSERT
-        List<ProductImage> productImages = getProductImage(form.getProductImages(), registerProduct);
-        registerProduct.setThumbnail(productImages.get(0).getUrl());
-        // 4. 상품 DB에 저장 INSERT
+        // 3. 상품 DB에 저장 INSERT
         Product saveProduct = productService.save(registerProduct);
+        // 4. 상품 이미지 DB 등록 INSERT
+        List<ProductImage> images = getProductImage(form.getProductImages(), saveProduct);
+        productService.updateThumbnail(images, saveProduct.getId());
         // 5. 상품 상세 페이지로 리다이렉트
         redirectAttributes.addAttribute("productId", saveProduct.getId());
         return "redirect:/products/list/{productId}";
@@ -209,12 +208,9 @@ public class ProductController {
     @PostMapping("/update")
     @ResponseStatus(HttpStatus.FOUND)
     public String updateProduct(@ModelAttribute ProductUpdateRequest form, @RequestParam("productId") Long productId, RedirectAttributes redirectAttributes){
-        // 1. 수정할 상품 조회 SELECT
-        Product product = productService.findProductDetails(productId);
-        // 2. 기존 이미지를 DB 에서 삭제하고 새로운 이미지 저장
-        // 3. 상품 수정 UPDATE
-        product.update(form.toProductEntity());
-        // 4. 상품 상세 페이지로 리다이렉트
+        // 1. 상품 수정 UPDATE
+        productService.updateProduct(productId, form.toProductEntity());
+        // 2. 상품 상세 페이지로 리다이렉트
         redirectAttributes.addAttribute("productId", productId);
         return "redirect:/products/list/{productId}";
     }
@@ -227,7 +223,7 @@ public class ProductController {
      */
     @GetMapping("/delete/check")
     public String deleteProductPage(@RequestParam("productId") Long productId, Model model){
-        model.addAttribute(productId);
+        model.addAttribute("productId", productId);
         return "product-delete";
     }
 
@@ -243,7 +239,7 @@ public class ProductController {
         // 2. 상품 이미지 삭제
         productImageService.deleteProductImage(product.getJoinProductImages());
         // 2. 상품 삭제
-        productService.deleteProduct(product);
+        productService.deleteProduct(productId);
         // 3. 상품 상세 페이지로 리다이렉트
         return "redirect:/products/list";
     }
