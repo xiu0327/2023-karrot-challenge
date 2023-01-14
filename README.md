@@ -13,7 +13,7 @@ docker run -d --name karrot-container -p 8080:8080 xiu0327/karrot
 
 ## ERD 다이어그램
 
-![논리적 설계](https://user-images.githubusercontent.com/78461009/212487727-e456e152-5df6-4c6c-acce-2572e07491ec.png)
+![논리적 설계](https://user-images.githubusercontent.com/78461009/212488771-82bd5b95-b83e-45d5-89ff-8df392410ead.png)
 
 
 ## 엔티티 관계도
