@@ -1,6 +1,16 @@
 # 2023-karrot-challenge
 넘블 당근마켓 백엔드 클론코딩 챌린지를 진행하며 만든 결과물 (2022.12.19-2023.01.15)
 
+Page : http://35.244.45.103:8080/
+
+Blog : https://velog.io/@xiu0327/%EB%8B%B9%EA%B7%BC%EB%A7%88%EC%BC%93-%EC%B1%8C%EB%A6%B0%EC%A7%80-%ED%9A%8C%EA%B3%A0
+
+## Docker 실행
+~~~
+docker pull xiu0327/karrot
+docker run -d --name karrot-container -p 8080:8080 xiu0327/karrot
+~~~
+
 ## ERD 다이어그램
 
 ![논리적 설계](https://user-images.githubusercontent.com/78461009/212487727-e456e152-5df6-4c6c-acce-2572e07491ec.png)
@@ -50,6 +60,3 @@
 - 스프링 내장 메시지 브로커를 통해 웹소켓 활용
 - 추후 마지막 대화 내용 구현 예정
 - 구매자 = 채팅하기 / 판매자 = 상품과 관련된 채팅 목록 조회 가능
-
-### 6. 회고록
-Blog : https://velog.io/@xiu0327/%EB%8B%B9%EA%B7%BC%EB%A7%88%EC%BC%93-%EC%B1%8C%EB%A6%B0%EC%A7%80-%ED%9A%8C%EA%B3%A0
