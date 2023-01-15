@@ -18,7 +18,9 @@ Blog : https://velog.io/@xiu0327/%EB%8B%B9%EA%B7%BC%EB%A7%88%EC%BC%93-%EC%B1%8C%
 #### 기술 스택
 - 프론트엔드 : HTML, CSS, Thymeleaf
 - 백엔드 : Spring, Springboot, Spring Security
-- 배포 : GKE(Google Kubernetes Engine), RDS, Docker
+- 배포 : GKE(Google Kubernetes Engine), Docker
+- 데이터 베이스 : RDS
+- 이미지 저장 : S3 
 
 ## Docker 실행
 ~~~

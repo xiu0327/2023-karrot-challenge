@@ -18,4 +18,5 @@ public interface InterestRepository {
     Interest findInterestByMemberAndProduct(Long productId, Long memberId);
     Interest create(Interest interest);
     void delete(Interest interest);
+    void deleteInterestByProductId(Long productId);
 }

@@ -17,4 +17,5 @@ public interface InterestService {
     List<Product> findInterestByMember(Member member);
     Interest addInterestList(Interest interest);
     void deleteInterestByProductList(Long productId, Long memberId);
+    void deleteInterestByProductId(Long productId);
 }

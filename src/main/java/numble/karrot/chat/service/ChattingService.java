@@ -26,4 +26,5 @@ public interface ChattingService {
     List<ChatRoom> findChatRoomBySeller(Long productId);
     Optional<ChatRoom> findChatRoomByName(String name);
     ChatRoom createChatRoom(ChatRoom chatRoom);
+    void deleteChatRoomByProductId(Long productId);
 }

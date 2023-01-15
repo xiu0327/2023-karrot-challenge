@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import numble.karrot.member.domain.Member;
 import numble.karrot.product.domain.Product;
 import numble.karrot.product.domain.ProductCategory;
 import org.springframework.web.multipart.MultipartFile;

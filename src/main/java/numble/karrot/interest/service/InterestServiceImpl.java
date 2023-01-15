@@ -45,5 +45,10 @@ public class InterestServiceImpl implements InterestService{
         interestRepository.delete(interest);
     }
 
+    @Override
+    public void deleteInterestByProductId(Long productId) {
+        interestRepository.deleteInterestByProductId(productId);
+    }
+
 
 }

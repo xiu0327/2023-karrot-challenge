@@ -38,7 +38,8 @@ public class ProductRegisterRequest {
      * @return Product Entity
      * */
     public Product toProductEntity(Member seller){
-        return Product.builder()
+        Product product = Product.builder()
+                .seller(seller)
                 .title(this.getTitle())
                 .category(this.getCategory())
                 .date(getPresentTime())
@@ -47,8 +48,8 @@ public class ProductRegisterRequest {
                 .interestCount(0)
                 .status(ProductStatus.TRADE)
                 .place("서울")
-                .price(this.getPrice())
-                .seller(seller).build();
+                .price(this.getPrice()).build();
+        return product;
     }
 
     private ZonedDateTime getPresentTime(){

@@ -64,4 +64,9 @@ public class ChattingServiceImpl implements ChattingService{
     public ChatRoom createChatRoom(ChatRoom chatRoom) {
         return repository.createChatRoom(chatRoom);
     }
+
+    @Override
+    public void deleteChatRoomByProductId(Long productId) {
+        repository.deleteChatRoomByProductId(productId);
+    }
 }

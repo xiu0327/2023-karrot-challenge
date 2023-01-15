@@ -34,5 +34,6 @@ public class ProductImage {
         this.url = url;
         this.fileName = fileName;
         this.product = product;
+        product.getJoinProductImages().add(this);
     }
 }

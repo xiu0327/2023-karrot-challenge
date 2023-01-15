@@ -1,8 +1,10 @@
 package numble.karrot.interest.repository;
 
 import lombok.RequiredArgsConstructor;
+import numble.karrot.chat.domain.ChatRoom;
 import numble.karrot.exception.DuplicateInterestExistsException;
 import numble.karrot.exception.InterestNotFoundException;
+import numble.karrot.exception.ProductNotFoundException;
 import numble.karrot.interest.domain.Interest;
 import numble.karrot.member.domain.Member;
 import numble.karrot.product.domain.Product;
@@ -53,6 +55,18 @@ public class InterestRepositoryImpl implements InterestRepository{
     @Override
     public void delete(Interest interest) {
         em.remove(interest);
+    }
+
+    @Override
+    public void deleteInterestByProductId(Long productId) {
+        em.remove(
+                em.createQuery("select r from ChatRoom r where r.product.id= :productId", ChatRoom.class)
+                        .setParameter("productId", productId)
+                        .getResultList().stream().findAny().orElseThrow(
+                                () -> {throw new ProductNotFoundException();
+                                }
+                        )
+        );
     }
 
     private void checkDuplicate(Interest interest){

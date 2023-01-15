@@ -26,4 +26,5 @@ public interface ChattingRepository {
     // 8. 특정 상품의 채팅 가져오기 - 주체 : 판매자
     List<ChatRoom> findChatRoomBySeller(Long productId);
     Optional<ChatRoom> findChatRoomByName(String name);
+    void deleteChatRoomByProductId(Long productId);
 }

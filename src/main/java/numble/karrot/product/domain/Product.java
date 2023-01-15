@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import numble.karrot.chat.domain.ChatRoom;
+import numble.karrot.interest.domain.Interest;
 import numble.karrot.member.domain.Member;
 import numble.karrot.product_image.domain.ProductImage;
 
@@ -60,11 +61,14 @@ public class Product {
     @Column(name = "thumbnail")
     private String thumbnail;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.REMOVE, CascadeType.DETACH})
     List<ProductImage> joinProductImages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.REMOVE, CascadeType.DETACH})
     List<ChatRoom> roomList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.REMOVE, CascadeType.DETACH})
+    List<Interest> interests = new ArrayList<>();
 
     @Builder
     public Product(String title, String category, String place, int price, ProductStatus status, int interestCount, int chattingCount, ZonedDateTime date, String content, Member seller) {
@@ -78,6 +82,7 @@ public class Product {
         this.date = date;
         this.content = content;
         this.seller = seller;
+        if(seller != null) seller.getOtherProducts().add(this);
     }
 
     // 상품 상태 변경
@@ -89,6 +94,12 @@ public class Product {
     public void setThumbnail(List<ProductImage> productImages) {
         this.thumbnail = productImages.get(0).getUrl();
         this.joinProductImages = productImages;
+    }
+
+    // 연관관계 편의 메소드
+    public void addProduct(Member seller){
+        this.seller = seller;
+        seller.getOtherProducts().add(this);
     }
 
 

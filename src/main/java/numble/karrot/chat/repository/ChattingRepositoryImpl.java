@@ -4,6 +4,7 @@ package numble.karrot.chat.repository;
 import lombok.RequiredArgsConstructor;
 import numble.karrot.chat.domain.Chat;
 import numble.karrot.chat.domain.ChatRoom;
+import numble.karrot.exception.ProductNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -73,5 +74,15 @@ public class ChattingRepositoryImpl implements ChattingRepository{
         return em.createQuery("select r from ChatRoom r where r.name= : name", ChatRoom.class)
                 .setParameter("name", name)
                 .getResultList().stream().findAny();
+    }
+
+    @Override
+    public void deleteChatRoomByProductId(Long productId) {
+        ChatRoom target = em.createQuery("select r from ChatRoom r where r.product.id= :productId", ChatRoom.class)
+                .setParameter("productId", productId)
+                .getResultList().stream().findAny().orElseThrow(() -> {
+                    throw new ProductNotFoundException();
+                });
+        em.remove(target);
     }
 }
