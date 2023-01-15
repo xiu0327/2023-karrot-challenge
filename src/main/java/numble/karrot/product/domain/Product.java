@@ -61,13 +61,13 @@ public class Product {
     @Column(name = "thumbnail")
     private String thumbnail;
 
-    @OneToMany(mappedBy = "product", cascade = {CascadeType.REMOVE, CascadeType.DETACH})
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.REMOVE, CascadeType.DETACH, CascadeType.PERSIST})
     List<ProductImage> joinProductImages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "product", cascade = {CascadeType.REMOVE, CascadeType.DETACH})
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.REMOVE, CascadeType.DETACH, CascadeType.PERSIST})
     List<ChatRoom> roomList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "product", cascade = {CascadeType.REMOVE, CascadeType.DETACH})
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.REMOVE, CascadeType.DETACH, CascadeType.PERSIST})
     List<Interest> interests = new ArrayList<>();
 
     @Builder
