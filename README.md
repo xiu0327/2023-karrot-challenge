@@ -5,6 +5,21 @@ Page : http://35.244.45.103:8080/
 
 Blog : https://velog.io/@xiu0327/%EB%8B%B9%EA%B7%BC%EB%A7%88%EC%BC%93-%EC%B1%8C%EB%A6%B0%EC%A7%80-%ED%9A%8C%EA%B3%A0
 
+#### 프로젝트 개발 환경
+- 운영체제 : MacOs (M1 pro)
+- 통합개발환경(IDE) : IntelliJ
+- JDK 버전 : JDK 11
+- 스프링 부트 버전 : 2.7.7
+- 데이터 베이스 : MySQL
+- 빌드 툴 : Gradle
+- 관리 툴 : Git, GitHub
+
+
+#### 기술 스택
+- 프론트엔드 : HTML, CSS, Thymeleaf
+- 백엔드 : Spring, Springboot, Spring Security
+- 배포 : GKE(Google Kubernetes Engine), RDS, Docker
+
 ## Docker 실행
 ~~~
 docker pull xiu0327/karrot
