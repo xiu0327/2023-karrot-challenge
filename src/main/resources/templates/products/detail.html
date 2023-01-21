@@ -14,35 +14,35 @@
 <body>
     <div class="header">
         <a href="/products/list" style="margin-right: 10px">목록으로</a>
-        <a th:if="${memberId == checkProduct.seller.id}" th:href="@{/products/delete/check(productId=${checkProduct.id})}" style="margin-left: 30%;">상품 삭제</a>
-        <a th:if="${memberId == checkProduct.seller.id}" th:href="@{/products/update(productId=${checkProduct.id})}">상품 수정</a>
+        <a th:if="${memberId == product.seller.id}" th:href="@{/products/delete/check(productId=${product.id})}" style="margin-left: 30%;">상품 삭제</a>
+        <a th:if="${memberId == product.seller.id}" th:href="@{/products/update(productId=${product.id})}">상품 수정</a>
     </div>
     <div style="margin-top:10px; overflow: scroll; width: 100%; height: 600px">
         <div class="slider">
             <input
             type="radio"
-            th:each="item, i: ${product.productImages}"
+            th:each="item, i: ${productDetail.productImages}"
             name="slide"
             th:id="'slide' + ${i.index}"
             checked
             />
             <ul id="imgholder" class="imgs">
-            <li th:each="item: ${product.productImages}">
+            <li th:each="item: ${productDetail.productImages}">
                 <img th:src="${item}" />
             </li>
             </ul>
             <div class="bullets">
             <label
-                th:each="item, i : ${product.productImages}"
+                th:each="item, i : ${productDetail.productImages}"
                 th:for="'slide'+${i.index}"
                 >&nbsp;</label
             >
             </div>
         </div>
         <div class="main">
-            <div th:if="${memberId == checkProduct.seller.id}">
+            <div th:if="${memberId == product.seller.id}">
                 <form style="padding: 10px; margin-left: 50px;" th:action="@{/products/update/status}" method="get">
-                    <input type="hidden" name="productId" th:value="${checkProduct.id}">
+                    <input type="hidden" name="productId" th:value="${product.id}">
                     <select name="status">
                         <option th:each="status: ${changeableStatus}" th:value="${status}" th:text="${status.value}" selected>판매중</option> 
                     </select>
@@ -52,32 +52,32 @@
             <div class="profile">
             <img
                 style="background-color: black"
-                th:src="${product.profile}"
+                th:src="${productDetail.profile}"
             />
             <div
                 style="margin-left: 10px; margin-top: 25px"
-                th:text="${product.nickName}"
+                th:text="${productDetail.nickName}"
             >
                 닉네임
             </div>
             </div>
             <div class="product-info">
-            <p th:text="${product.title}">상품명</p>
-            <p th:text="${product.date}">상품 등록 시간</p>
-            <p th:text="${product.status}">상품상태</p>
-            <p th:text="${product.category}">상품 카테고리</p>
-            <p th:text="${product.content}">상품 내용</p>
+            <p th:text="${productDetail.title}">상품명</p>
+            <p th:text="${productDetail.date}">상품 등록 시간</p>
+            <p th:text="${productDetail.status}">상품상태</p>
+            <p th:text="${productDetail.category}">상품 카테고리</p>
+            <p th:text="${productDetail.content}">상품 내용</p>
             <div style="display: inline-block">
                 <span
-                th:text="${product.nickName} + ' 님의 판매상품'"
+                th:text="${productDetail.nickName} + ' 님의 판매상품'"
                 style="margin-right: 30px"
                 >닉네임님의 판매상품</span
                 >
-                <a th:href="@{/products/list/other/all(memberId=${product.sellerId})}"
+                <a th:href="@{/products/list/other(memberId=${product.seller.id})}"
                 >모두 보기</a
                 >
             </div>
-            <div th:each="item, i: ${product.otherProducts}">
+            <div th:each="item, i: ${productDetail.otherProducts}">
                 <span th:if="${i.index==0}" style="display: inline-block">
                 <div>
                     <a th:href="${'/products/list/' + item.id}">
@@ -118,15 +118,15 @@
             </div>
     </div>
         <div class="footer">
-            <div style="margin-bottom: 10px; padding-top: 10px; font-size: 40px;" th:if="${#lists.contains(interestList, checkProduct)}">
-                <a class="interest_a" th:href="@{/interests/delete(productId=${checkProduct.id})}">💖</a>
+            <div style="margin-bottom: 10px; padding-top: 10px; font-size: 40px;" th:if="${#lists.contains(interestList, product)}">
+                <a class="interest_a" th:href="@{/interests/delete(productId=${product.id})}">💖</a>
             </div>
-            <div style="margin-bottom: 10px; padding-top: 10px; font-size: 40px;" th:unless="${#lists.contains(interestList, checkProduct)}">
-                <a class="interest_a" th:href="@{/interests/save(productId=${checkProduct.id})}">🤍️</a>
+            <div style="margin-bottom: 10px; padding-top: 10px; font-size: 40px;" th:unless="${#lists.contains(interestList, product)}">
+                <a class="interest_a" th:href="@{/interests/save(productId=${product.id})}">🤍️</a>
             </div>
-            <span th:text="${product.price + ' 원'}">상품가격</span>
-            <a th:if="${memberId == checkProduct.seller.id}" th:href="${'/products/list/'+ checkProduct.id +'/chat'}" class="chatting">관련채팅</a>
-            <a th:unless="${memberId == checkProduct.seller.id}" th:href="@{/chat/room(roomName=${roomName}, productId=${checkProduct.id})}" class="chatting">채팅하기</a>
+            <span th:text="${productDetail.price + ' 원'}">상품가격</span>
+            <a th:if="${memberId == product.seller.id}" th:href="${'/products/list/'+ product.id +'/chat'}" class="chatting">관련채팅</a>
+            <a th:unless="${memberId == product.seller.id}" th:href="@{/chat/room(roomName=${roomName}, productId=${product.id})}" class="chatting">채팅하기</a>
         </div>   
     <div id="no-mobile">
         <span>화면 크기를 줄여주세요</span>

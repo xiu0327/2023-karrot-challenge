@@ -8,9 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.transaction.Transactional;
 import java.time.*;
 
-import static java.lang.Math.*;
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 @Transactional
 class ProductDateHandlerTest {

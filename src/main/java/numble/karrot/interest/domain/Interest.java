@@ -30,7 +30,7 @@ public class Interest {
     public Interest(Member member, Product product) {
         this.member = member;
         this.product = product;
-        member.getInterestList().add(this);
+        member.getInterests().add(this);
     }
 
     public void increaseProductInterestCount(){

@@ -1,22 +1,56 @@
 package numble.karrot.product_image.service;
 
+import lombok.RequiredArgsConstructor;
+import numble.karrot.aws.S3Uploader;
+import numble.karrot.image.ImageStorageFolderName;
 import numble.karrot.product.domain.Product;
 import numble.karrot.product_image.domain.ProductImage;
+import numble.karrot.product_image.repository.ProductImageRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
 
-public interface ProductImageService {
-    /**
-     * 1. 상품 이미지 DB 저장
-     * 2. 상품 이미지 수정 -> 기존 이미지 제거 후, 새로운 이미지 추가
-     * 3. 상품 이미지 삭제 -> 기존 이미지 제거
-     * 4. 상품 이미지 조회
-     * */
-    ProductImage save(ProductImage productImage);
-    List<ProductImage> findProductImages(Product product);
-    ProductImage updateProductImage(ProductImage oldProductImage, ProductImage newProductImage);
-    void deleteProductImage(List<ProductImage> productImages);
-    ProductImage convert(MultipartFile multipartFile, Product product) throws IOException;
+@Service
+@RequiredArgsConstructor
+public class ProductImageService{
+
+    private final ProductImageRepository productImageRepository;
+    private final S3Uploader s3Uploader;
+
+
+    public ProductImage save(ProductImage productImage) {
+        productImageRepository.create(productImage);
+        return productImage;
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProductImage> findProductImages(Product product) {
+        return productImageRepository.findProductImageList(product);
+    }
+
+    @Transactional
+    public ProductImage updateProductImage(ProductImage oldProductImage, ProductImage newProductImage) {
+        productImageRepository.removeProductImage(oldProductImage.getId());
+        productImageRepository.create(newProductImage);
+        return newProductImage;
+    }
+
+    @Transactional
+    public void deleteProductImage(List<ProductImage> productImages) {
+        for (ProductImage image : productImages) {
+            productImageRepository.removeProductImage(image.getId());
+        }
+    }
+
+    public ProductImage convert(MultipartFile multipartFile, Product product) throws IOException{
+        String url = s3Uploader.getImageUrl(multipartFile, ImageStorageFolderName.PRODUCT_IMAGE_PATH);
+        return ProductImage.builder()
+                .url(url)
+                .fileName(s3Uploader.getFileName(url))
+                .product(product)
+                .build();
+    }
 }

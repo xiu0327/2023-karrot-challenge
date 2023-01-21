@@ -7,16 +7,13 @@ import numble.karrot.chat.service.ChattingService;
 import numble.karrot.member.domain.Member;
 import numble.karrot.member.service.MemberService;
 import numble.karrot.product.service.ProductService;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -38,7 +35,7 @@ public class ChatRoomController {
                 () -> chattingService.createChatRoom(ChatRoom.builder()
                         .roomName(roomName)
                         .buyer(member)
-                        .product(productService.findProductDetails(productId)).build())
+                        .product(productService.findOne(productId)).build())
         );
         // 3. 채팅 내역 조회 SELECT
         List<Chat> chatList = chattingService.findChatFromChatRoom(room.getId());
@@ -48,6 +45,6 @@ public class ChatRoomController {
         model.addAttribute("roomId", room.getId());
         model.addAttribute("profile", member.getProfile());
         model.addAttribute("nickname", member.getNickName());
-        return "chat";
+        return "chatting/chat";
     }
 }

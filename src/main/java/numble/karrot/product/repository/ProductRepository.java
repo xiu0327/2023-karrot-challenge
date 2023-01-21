@@ -1,28 +1,37 @@
 package numble.karrot.product.repository;
 
+import lombok.RequiredArgsConstructor;
 import numble.karrot.product.domain.Product;
 import numble.karrot.product.domain.ProductStatus;
+import numble.karrot.exception.ProductNotFoundException;
 import numble.karrot.product_image.domain.ProductImage;
+import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
-/**
- * 1. 상품 등록
- * 2. 상품 상세 정보 조회
- * 3. 전체 상품 목록 조회
- * 4. 특정 회원이 올린 상품 전체 조회
- * 5. 특정 회원이 올린 상품 판매 상태별 조회
- * 6. 상품 삭제
- * 7. 상품 수정
- * */
-public interface ProductRepository {
-    Product save(Product product);
-    Product findProductById(Long id);
-    List<Product> findAllProduct();
-    void removeProduct(Long productId);
-    Product updateProduct(Long id, Product product);
-    Product updateProductStatus(Long id, ProductStatus status);
-    List<Product> findProductsByStatus(Long memberId, ProductStatus status);
-    List<Product> findProductsByMember(Long memberId);
-    Product updateThumbnail(List<ProductImage> images, Long productId);
+@Repository
+@RequiredArgsConstructor
+public class ProductRepository{
+
+    private final EntityManager em;
+
+    public Long save(Product product) {
+        em.persist(product);
+        return product.getId();
+    }
+
+    public Product findProductById(Long id) throws ProductNotFoundException {
+        return em.find(Product.class, id);
+    }
+
+    public List<Product> findAllProduct() {
+        return em.createQuery("select p from Product p", Product.class)
+                .getResultList();
+    }
+
+    public void removeProduct(Long productId) {
+        em.remove(em.find(Product.class, productId));
+    }
+
 }

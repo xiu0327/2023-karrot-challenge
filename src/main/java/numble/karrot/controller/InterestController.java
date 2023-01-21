@@ -14,9 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
-
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/interests")
@@ -38,7 +35,7 @@ public class InterestController {
         // 1. 회원 정보 SELECT
         Member member = memberService.findMember(userDetails.getUsername());
         // 2. 관심 목록에 추가할 판매 상품 정보 조회 SELECT
-        Product product = productService.findProductDetails(productId);
+        Product product = productService.findOne(productId);
         // 3. 관심 목록에 저장 CREATE
         interestService.addInterestList(Interest.builder()
                 .member(member)

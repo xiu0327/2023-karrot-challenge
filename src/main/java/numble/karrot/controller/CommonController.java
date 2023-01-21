@@ -2,11 +2,9 @@ package numble.karrot.controller;
 
 
 import lombok.RequiredArgsConstructor;
-import numble.karrot.member.domain.Member;
 import numble.karrot.member.dto.MemberJoinRequest;
 import numble.karrot.member.dto.MemberLoginRequest;
 import numble.karrot.member.service.MemberService;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -37,14 +35,13 @@ public class CommonController {
     @GetMapping("/join")
     public String joinPage(Model model){
         model.addAttribute("form", new MemberJoinRequest());
-        return "join";
+        return "members/join";
     }
 
     @PostMapping("/join")
-    @ResponseStatus(HttpStatus.CREATED)
     public String join(@ModelAttribute MemberJoinRequest form){
         memberService.join(form.toMemberEntity());
-        return "join-success";
+        return "redirect:/";
     }
 
     @GetMapping("/login")

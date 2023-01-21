@@ -23,7 +23,7 @@
         <img th:src="${member.profile}" />
       </div>
       <form
-        th:action="@{/my-page/profile}"
+        th:action="${'/my-page/profile' + member.id}"
         th:object="${form}"
         class="modify-form"
         method="post"

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html
   xmlns:th="https://www.thymeleaf.org"
-  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 >
   <head>
     <link
@@ -21,7 +20,7 @@
         <a
           class="register"
           style="margin-left: 100px"
-          th:href="@{/products/list/other/all(memberId=${memberId})}"
+          th:href="@{/products/list/other(memberId=${memberId})}"
           >전체</a
         >
         <a

@@ -3,17 +3,20 @@ package numble.karrot.product.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import numble.karrot.TimeService;
 import numble.karrot.chat.domain.ChatRoom;
 import numble.karrot.interest.domain.Interest;
 import numble.karrot.member.domain.Member;
+import numble.karrot.product.dto.ProductDetailsResponse;
 import numble.karrot.product_image.domain.ProductImage;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.util.Arrays.stream;
 
 @Entity
 @Getter
@@ -62,28 +65,35 @@ public class Product {
     private String thumbnail;
 
     @OneToMany(mappedBy = "product", cascade = {CascadeType.REMOVE, CascadeType.DETACH, CascadeType.PERSIST})
-    List<ProductImage> joinProductImages = new ArrayList<>();
+    List<ProductImage> productImages = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = {CascadeType.REMOVE, CascadeType.DETACH, CascadeType.PERSIST})
-    List<ChatRoom> roomList = new ArrayList<>();
+    List<ChatRoom> chatRooms = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = {CascadeType.REMOVE, CascadeType.DETACH, CascadeType.PERSIST})
     List<Interest> interests = new ArrayList<>();
 
     @Builder
-    public Product(String title, String category, String place, int price, ProductStatus status, int interestCount, int chattingCount, ZonedDateTime date, String content, Member seller) {
+    public Product(String title, String category, int price, String content) {
         this.title = title;
         this.category = category;
-        this.place = place;
-        this.price = price;
-        this.status = status;
-        this.interestCount = interestCount;
-        this.chattingCount = chattingCount;
-        this.date = date;
         this.content = content;
-        this.seller = seller;
-        if(seller != null) seller.getOtherProducts().add(this);
+        this.price = price;
+        this.status = ProductStatus.TRADE;
+        this.interestCount = 0;
+        this.chattingCount = 0;
+        this.place = "서울";
+        this.date = TimeService.getPresentTime();
     }
+
+    // 연관관계 편의 메소드
+    public void addProduct(Member seller){
+        this.seller = seller;
+        seller.getProducts().add(this);
+    }
+
+
+    /* 비즈니스 로직 */
 
     // 상품 상태 변경
     public void setStatus(ProductStatus status) {
@@ -93,22 +103,15 @@ public class Product {
     // 썸네일 등록
     public void setThumbnail(List<ProductImage> productImages) {
         this.thumbnail = productImages.get(0).getUrl();
-        this.joinProductImages = productImages;
+        this.productImages = productImages;
     }
-
-    // 연관관계 편의 메소드
-    public void addProduct(Member seller){
-        this.seller = seller;
-        seller.getOtherProducts().add(this);
-    }
-
 
     //상품 정보 변경
     public Product update(Product product){
-        this.title = product.getTitle();
-        this.price = product.getPrice();
-        this.content = product.getContent();
-        this.category = product.getCategory();
+        title = product.getTitle();
+        price = product.getPrice();
+        content = product.getContent();
+        category = product.getCategory();
         return this;
     }
 
@@ -130,6 +133,27 @@ public class Product {
     //채팅 갯수 감소
     public void reduceChattingCount(){
         this.chattingCount--;
+    }
+
+    /* 조회 로직 */
+
+    public List<String> getProductImageUrl(){
+        return productImages.stream().map(i -> i.getUrl()).collect(Collectors.toList());
+    }
+
+    public ProductDetailsResponse toProductDetail(){
+        return ProductDetailsResponse.builder()
+                .productImages(getProductImageUrl())
+                .profile(seller.getProfile())
+                .otherProducts(seller.getProducts())
+                .category(category)
+                .content(content)
+                .date(TimeService.replaceProductDate(date.toLocalDateTime()))
+                .nickName(seller.getNickName())
+                .price(price)
+                .interestCount(interestCount)
+                .title(title)
+                .status(status.getValue()).build();
     }
 
 }

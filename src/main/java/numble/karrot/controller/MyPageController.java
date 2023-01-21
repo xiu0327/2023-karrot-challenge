@@ -5,7 +5,6 @@ import numble.karrot.aws.S3Uploader;
 import numble.karrot.chat.domain.ChatRoom;
 import numble.karrot.chat.service.ChattingService;
 import numble.karrot.image.ImageStorageFolderName;
-import numble.karrot.interest.domain.Interest;
 import numble.karrot.interest.service.InterestService;
 import numble.karrot.member.domain.Member;
 import numble.karrot.member.dto.MemberUpdateRequest;
@@ -14,6 +13,7 @@ import numble.karrot.product.domain.Product;
 import numble.karrot.product.domain.ProductStatus;
 import numble.karrot.product.service.ProductService;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -21,7 +21,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,9 +44,8 @@ public class MyPageController {
      */
     @GetMapping()
     public String myPage(@AuthenticationPrincipal UserDetails userDetails, Model model){
-        Member member = memberService.findMember(userDetails.getUsername());
-        model.addAttribute("member", member);
-        return "my-page";
+        model.addAttribute("member", memberService.findMember(userDetails.getUsername()));
+        return "my-page/main";
     }
 
     /**
@@ -60,24 +58,16 @@ public class MyPageController {
         Member member = memberService.findMember(userDetails.getUsername());
         // 2. View 속성값 등록
         model.addAttribute("member", member);
-        model.addAttribute("form", new MemberUpdateRequest());
-        return "my-page-profile";
+        model.addAttribute("form", MemberUpdateRequest.builder().nickName(member.getNickName()).build());
+        return "my-page/profile";
     }
 
-    @PostMapping("/profile")
+    @PostMapping("/profile/{memberId}")
     @ResponseStatus(HttpStatus.FOUND)
     public String profileUpdate(
-            @AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable(name = "memberId") Long memberId,
             @ModelAttribute MemberUpdateRequest form) throws IOException {
-        // 1. 닉네임이 수정되었다면, 수정 진행 UPDATE
-        if(form.getNickName() != null){
-            memberService.updateNickName(userDetails.getUsername(), form.getNickName());
-        }
-        // 2. 이미지가 수정되었다면, 수정 진행 UPDATE
-        if(!form.getProfile().isEmpty()){
-            String imageUrl = s3Uploader.getImageUrl(form.getProfile(), ImageStorageFolderName.MEMBER_IMAGE_PATH);
-            memberService.updateProfile(userDetails.getUsername(), imageUrl);
-        }
+        memberService.update(memberId, form);
         return "redirect:/my-page";
     }
 
@@ -86,46 +76,23 @@ public class MyPageController {
      * @return
      */
     @GetMapping("/product")
-    public String productDetailsPage(@AuthenticationPrincipal UserDetails userDetails, @RequestParam("status") ProductStatus status, Model model){
+    public String productDetailsPage(@AuthenticationPrincipal UserDetails userDetails, @Nullable @RequestParam("status") ProductStatus status, Model model){
         // 1. 회원 정보 SELECT
         Member member = memberService.findMember(userDetails.getUsername());
-        // 2. 회원의 판매 내역 조회 SELECT
-        List<Product> products = member.getOtherProducts().stream()
-                .filter((item)->item.getStatus() == status)
-                        .collect(Collectors.toList());
-        // 3. View 속성값 등록
-        model.addAttribute("products", products);
-        model.addAttribute("interestByMember", member.toProductList());
-        model.addAttribute("changeableStatus", stream(ProductStatus.values())
-                .filter((item) -> item != status).collect(Collectors.toList()));
-        return "my-page-product";
-    }
-
-    /**
-     * 전체 관심목록 페이지로 이동
-     * @return
-     */
-    @GetMapping("/interest/all")
-    public String interestDetailsPage(@AuthenticationPrincipal UserDetails userDetails, Model model){
-        // 1. 회원 정보 SELECT
-        Member member = memberService.findMember(userDetails.getUsername());
-        // 2. View 속성 등록
-        model.addAttribute("interestProducts", member.toProductList());
-        return "my-page-interest";
+        // 2. View 속성값 등록
+        model.addAttribute("products", member.getProductByStatus(status));
+        model.addAttribute("interestByMember", member.getProductByInterest());
+        model.addAttribute("changeableStatus", productService.getChangeableProductStatus(status));
+        return "my-page/product";
     }
 
     @GetMapping("/interest")
-    public String interestDetailsPageByStatus(@AuthenticationPrincipal UserDetails userDetails, @RequestParam("status") ProductStatus status, Model model){
+    public String interestDetailsPageByStatus(@AuthenticationPrincipal UserDetails userDetails, @Nullable @RequestParam("status") ProductStatus status, Model model){
         // 1. 회원 정보 SELECT
         Member member = memberService.findMember(userDetails.getUsername());
-        // 2. 상태별 필터 및 상품만 추출
-        List<Product> interestProducts = member.getInterestList().stream()
-                .filter((item) -> item.getProduct().getStatus() == status)
-                .map((item) -> item.getProduct())
-                .collect(Collectors.toList());
-        // 3. View 속성 등록
-        model.addAttribute("interestProducts", interestProducts);
-        return "my-page-interest";
+        // 2. View 속성 등록
+        model.addAttribute("interestProducts", member.getInterestStatus(status));
+        return "my-page/interest";
     }
 
     /**
@@ -141,6 +108,6 @@ public class MyPageController {
         // 2. View 속성값 등록
         model.addAttribute("userEmail", userDetails.getUsername());
         model.addAttribute("chatList", chatList);
-        return "my-page-chat";
+        return "my-page/chat";
     }
 }

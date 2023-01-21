@@ -1,19 +1,32 @@
 package numble.karrot.product_image.repository;
 
+import lombok.RequiredArgsConstructor;
 import numble.karrot.product.domain.Product;
 import numble.karrot.product_image.domain.ProductImage;
+import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
-/**
- * 1. 상품 이미지 DB 등록
- * 2. 상품 이미지 조회
- * 3. 상품 이미지 삭제
- * */
+@Repository
+@RequiredArgsConstructor
+public class ProductImageRepository{
 
+    private final EntityManager em;
 
-public interface ProductImageRepository {
-    ProductImage create(ProductImage productImage);
-    List<ProductImage> findProductImageList(Product product);
-    void removeProductImage(Long id);
+    public ProductImage create(ProductImage productImage) {
+        em.persist(productImage);
+        return productImage;
+    }
+
+    public List<ProductImage> findProductImageList(Product product) {
+        return em.createQuery("select pi from ProductImage pi where pi.product= :product", ProductImage.class)
+                .setParameter("product", product)
+                .getResultList();
+    }
+
+    public void removeProductImage(Long id) {
+        ProductImage productImage = em.find(ProductImage.class, id);
+        em.remove(productImage);
+    }
 }

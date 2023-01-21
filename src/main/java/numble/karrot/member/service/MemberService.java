@@ -1,17 +1,51 @@
 package numble.karrot.member.service;
 
+import lombok.RequiredArgsConstructor;
+import numble.karrot.aws.S3Uploader;
+import numble.karrot.image.ImageStorageFolderName;
 import numble.karrot.member.domain.Member;
-import org.springframework.web.multipart.MultipartFile;
+import numble.karrot.member.dto.MemberUpdateRequest;
+import numble.karrot.member.repository.MemberRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 
-public interface MemberService {
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class MemberService{
 
-    Member join(Member member);
-    Member findMember(String email);
-    Member updateNickName(String email, String nickName);
-    Member updateProfile(String email, String profile);
-    void deleteMember(Member member);
-    List<Member> findAllMember();
+    private final MemberRepository memberRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    private final S3Uploader s3Uploader;
+
+    @Transactional
+    public Long join(Member member) {
+        member.encryptPassword(passwordEncoder);
+        return memberRepository.create(member);
+    }
+
+    @Transactional
+    public void update(Long memberId, MemberUpdateRequest request) throws IOException {
+        memberRepository.updateNickName(memberId, request.getNickName());
+        if(!request.getProfile().isEmpty()){
+            String imageUrl = s3Uploader.getImageUrl(request.getProfile(), ImageStorageFolderName.MEMBER_IMAGE_PATH);
+            memberRepository.updateProfile(memberId,imageUrl);
+        }
+    }
+
+    public Member findOne(Long memberId){ return memberRepository.findOne(memberId); }
+
+    public List<Member> findAllMember() {
+        return memberRepository.findAllMember();
+    }
+
+    public Member findMember(String email) {
+        return memberRepository.findMemberByEmail(email);
+    }
 
 }

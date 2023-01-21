@@ -7,16 +7,23 @@ import lombok.Setter;
 import numble.karrot.member.domain.Member;
 import numble.karrot.member.domain.MemberRole;
 
+import javax.validation.constraints.NotEmpty;
+
 @Getter
 @Setter
 @NoArgsConstructor
 public class MemberJoinRequest {
 
 
+    @NotEmpty(message = "이메일 입력은 필수 입니다.")
     private String email;
+    @NotEmpty(message = "비밀번호 입력은 필수 입니다.")
     private String password;
+    @NotEmpty(message = "이름 입력은 필수 입니다.")
     private String name;
+    @NotEmpty(message = "휴대폰 입력은 필수 입니다.")
     private String phone;
+    @NotEmpty(message = "닉네임 입력은 필수 입니다.")
     private String nickname;
 
     @Builder
@@ -33,13 +40,12 @@ public class MemberJoinRequest {
     * */
     public Member toMemberEntity(){
         return Member.builder()
-                .email(this.email)
-                .password(this.password)
-                .nickName(this.nickname)
-                .name(this.name)
-                .phone(this.phone)
+                .email(email)
+                .password(password)
+                .nickName(nickname)
+                .name(name)
+                .phone(phone)
                 .memberRole(MemberRole.ROLE_USER)
-
                 .build();
     }
 
