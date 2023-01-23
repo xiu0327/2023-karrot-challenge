@@ -1,30 +1,80 @@
 package numble.karrot.chat.repository;
 
+
+import lombok.RequiredArgsConstructor;
 import numble.karrot.chat.domain.Chat;
 import numble.karrot.chat.domain.ChatRoom;
+import numble.karrot.exception.ProductNotFoundException;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
-public interface ChattingRepository {
+@Repository
+@RequiredArgsConstructor
+public class ChattingRepository{
 
-    // 1. 전체 채팅방 조회
-    List<ChatRoom> findAllChatRoom();
-    // 2. 특정 회원이 참여중인 채팅방 조회
-    List<ChatRoom> findChatRoomByMember(String email);
-    // 3. 특정 상품의 채팅 가져오기 - 주체 : 구매자
-    Optional<ChatRoom> findChatRoomByBuyer(Long productId, Long buyerId);
-    // 4. 특정 채팅방 조회 By Id
-    ChatRoom findChatRoomById(Long id);
-    // 5. 특정 채팅방의 채팅 내역 가져오기
-    List<Chat> findChatFromChatRoom(Long roomId);
-    // 6. 채팅방 생성
-    ChatRoom createChatRoom(ChatRoom chatRoom);
-    // 7. 채팅 내용 저장
-    Long saveChat(Chat chat);
-    // 8. 특정 상품의 채팅 가져오기 - 주체 : 판매자
-    List<ChatRoom> findChatRoomBySeller(Long productId);
-    Optional<ChatRoom> findChatRoomByName(String name);
-    void deleteChatRoomByProductId(Long productId);
+    private final EntityManager em;
+
+    public List<ChatRoom> findAllChatRoom() {
+        return em.createQuery("select r from ChatRoom r", ChatRoom.class)
+                .getResultList();
+    }
+
+    public List<ChatRoom> findChatRoomByMember(String email) {
+        return em.createQuery("select r from ChatRoom r where r.buyer.email= :email or r.product.seller.email= :email", ChatRoom.class)
+                .setParameter("email", email)
+                .getResultList();
+    }
+
+    public Optional<ChatRoom> findChatRoomByBuyer(Long productId, Long buyerId) {
+        return em.createQuery("select r from ChatRoom r where r.product.id= :productId and r.buyer.id= :buyerId", ChatRoom.class)
+                .setParameter("productId", productId)
+                .setParameter("buyerId", buyerId)
+                .getResultList().stream().findAny();
+    }
+
+    public ChatRoom findChatRoomById(Long id) {
+        return em.find(ChatRoom.class, id);
+    }
+
+    public List<Chat> findChatFromChatRoom(Long roomId) {
+        return em.createQuery("select c from Chat c where c.roomId= :roomId", Chat.class)
+                .setParameter("roomId", roomId)
+                .getResultList();
+    }
+
+    public ChatRoom createChatRoom(ChatRoom chatRoom) {
+        em.persist(chatRoom);
+        return chatRoom;
+    }
+
+    public Long saveChat(Chat chat) {
+        em.persist(chat);
+        return chat.getId();
+    }
+
+    public List<ChatRoom> findChatRoomBySeller(Long productId) {
+        return em.createQuery("select r from ChatRoom r where r.product.id= :productId", ChatRoom.class)
+                .setParameter("productId", productId)
+                .getResultList();
+    }
+
+
+    public Optional<ChatRoom> findChatRoomByName(String name) {
+        return em.createQuery("select r from ChatRoom r where r.name= : name", ChatRoom.class)
+                .setParameter("name", name)
+                .getResultList().stream().findAny();
+    }
+
+
+    public void deleteChatRoomByProductId(Long productId) {
+        ChatRoom target = em.createQuery("select r from ChatRoom r where r.product.id= :productId", ChatRoom.class)
+                .setParameter("productId", productId)
+                .getResultList().stream().findAny().orElseThrow(() -> {
+                    throw new ProductNotFoundException();
+                });
+        em.remove(target);
+    }
 }

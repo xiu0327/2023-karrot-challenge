@@ -30,14 +30,12 @@ public class Interest {
     public Interest(Member member, Product product) {
         this.member = member;
         this.product = product;
+        product.addInterestCount();
         member.getInterests().add(this);
     }
 
-    public void increaseProductInterestCount(){
-        this.product.addInterestCount();
-    }
-
     public void reduceProductInterestCount(){
-        this.product.reduceInterestCount();
+        product.reduceInterestCount();
+        member.getInterests().remove(this);
     }
 }

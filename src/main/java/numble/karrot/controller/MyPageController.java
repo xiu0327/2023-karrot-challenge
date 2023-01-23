@@ -4,12 +4,10 @@ import lombok.RequiredArgsConstructor;
 import numble.karrot.aws.S3Uploader;
 import numble.karrot.chat.domain.ChatRoom;
 import numble.karrot.chat.service.ChattingService;
-import numble.karrot.image.ImageStorageFolderName;
 import numble.karrot.interest.service.InterestService;
 import numble.karrot.member.domain.Member;
 import numble.karrot.member.dto.MemberUpdateRequest;
 import numble.karrot.member.service.MemberService;
-import numble.karrot.product.domain.Product;
 import numble.karrot.product.domain.ProductStatus;
 import numble.karrot.product.service.ProductService;
 import org.springframework.http.HttpStatus;
@@ -22,9 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static java.util.Arrays.*;
 
 @Controller
 @RequiredArgsConstructor

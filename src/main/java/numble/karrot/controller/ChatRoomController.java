@@ -22,24 +22,12 @@ public class ChatRoomController {
 
     private final ChattingService chattingService;
     private final MemberService memberService;
-    private final ProductService productService;
-    /**
-     * 채팅방 페이지 ('채팅하기'를 눌렀을 때)
-     */
+
     @GetMapping("/room")
     public String enterPage(@AuthenticationPrincipal UserDetails userDetails, @RequestParam("productId") Long productId, @RequestParam("roomName") String roomName, Model model){
-        // 1. 회원 정보 조회 SELECT
         Member member = memberService.findMember(userDetails.getUsername());
-        // 2. 채팅방 상세 정보 조회 SELECT OR INSERT
-        ChatRoom room = chattingService.findChatRoomByName(roomName).orElseGet(
-                () -> chattingService.createChatRoom(ChatRoom.builder()
-                        .roomName(roomName)
-                        .buyer(member)
-                        .product(productService.findOne(productId)).build())
-        );
-        // 3. 채팅 내역 조회 SELECT
+        ChatRoom room = chattingService.findChatRoomByName(member, roomName, productId);
         List<Chat> chatList = chattingService.findChatFromChatRoom(room.getId());
-        // 4. View 속성값 등록
         model.addAttribute("product", room.getProduct());
         model.addAttribute("chatList", chatList);
         model.addAttribute("roomId", room.getId());

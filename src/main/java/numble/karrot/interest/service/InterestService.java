@@ -1,21 +1,41 @@
 package numble.karrot.interest.service;
 
+import lombok.RequiredArgsConstructor;
 import numble.karrot.interest.domain.Interest;
+import numble.karrot.interest.repository.InterestRepository;
 import numble.karrot.member.domain.Member;
+import numble.karrot.member.repository.MemberRepository;
 import numble.karrot.product.domain.Product;
+import numble.karrot.product.repository.ProductRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-/**
- * 1. 특정 회원의 관심 목록 조회
- * 2. 관심 목록 추가
- * 3. 관심 목록 삭제
- * 4. 특정 상품의 관심수 증가
- * 5. 특정 상품의 관심수 감소
- */
-public interface InterestService {
-    List<Product> findInterestByMember(Member member);
-    Interest addInterestList(Interest interest);
-    void deleteInterestByProductList(Long productId, Long memberId);
-    void deleteInterestByProductId(Long productId);
+@Service
+@RequiredArgsConstructor
+public class InterestService{
+
+    private final InterestRepository interestRepository;
+    private final MemberRepository memberRepository;
+    private final ProductRepository productRepository;
+
+    @Transactional
+    public Long addInterestList(String email, Long productId) {
+        Member member = memberRepository.findMemberByEmail(email);
+        Product product = productRepository.findProductById(productId);
+        return interestRepository.create(Interest.builder()
+                .member(member)
+                .product(product).build());
+    }
+
+    @Transactional
+    public void deleteInterestByProductList(String email, Long productId) {
+        Member member = memberRepository.findMemberByEmail(email);
+        interestRepository.delete(interestRepository.findInterestByMemberAndProduct(member.getId(), productId));
+    }
+
+
+
 }

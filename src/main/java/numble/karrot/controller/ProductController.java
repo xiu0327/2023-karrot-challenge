@@ -1,20 +1,15 @@
 package numble.karrot.controller;
 
 import lombok.RequiredArgsConstructor;
-import numble.karrot.chat.domain.ChatRoom;
 import numble.karrot.chat.service.ChattingService;
 import numble.karrot.member.domain.Member;
 import numble.karrot.member.service.MemberService;
 import numble.karrot.product.domain.Product;
 import numble.karrot.product.domain.ProductCategory;
 import numble.karrot.product.domain.ProductStatus;
-import numble.karrot.product.dto.ProductDetailsResponse;
 import numble.karrot.product.dto.ProductRegisterRequest;
 import numble.karrot.product.dto.ProductUpdateRequest;
 import numble.karrot.product.service.ProductService;
-import numble.karrot.product_image.service.ProductImageService;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,8 +24,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static java.util.Arrays.*;
 
 @Controller
 @RequestMapping("/products")

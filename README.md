@@ -93,4 +93,7 @@ docker run -d --name karrot-container -p 8080:8080 xiu0327/karrot
     - 엔티티와 관련된 비지니스/조회 로직은 엔티티에서 해결하도록 수정
   - 트랜잭션 범위를 고려한 리팩토링 진행
     - 트랜잭션 범위를 고려하여 불필요한 조회가 발생하지 않도록 최대한 수정
-
+- 1월 23일 : 2차 리팩토링 완료
+  - Interest, Chatting의 Repository, Service 인터페이스 삭제
+  - 1차 리팩토링과 유사하게 트랜잭션 범위를 효율적으로 사용하기 위해 Controller에 있는 비즈니스 로직을 Service로 옮김
+  - 불필요한 메서드 삭제

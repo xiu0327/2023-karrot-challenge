@@ -20,38 +20,18 @@ import org.springframework.web.bind.annotation.*;
 public class InterestController {
 
     private final InterestService interestService;
-    private final MemberService memberService;
-    private final ProductService productService;
 
-    /**
-     * 특정 상품을 관심 목록에 추가
-     * @param userDetails
-     * @param productId
-     * @return
-     */
     @GetMapping("/save")
     @ResponseStatus(HttpStatus.CREATED)
     public String save(@AuthenticationPrincipal UserDetails userDetails, @RequestParam("productId") Long productId, Model model){
-        // 1. 회원 정보 SELECT
-        Member member = memberService.findMember(userDetails.getUsername());
-        // 2. 관심 목록에 추가할 판매 상품 정보 조회 SELECT
-        Product product = productService.findOne(productId);
-        // 3. 관심 목록에 저장 CREATE
-        interestService.addInterestList(Interest.builder()
-                .member(member)
-                .product(product).build());
-        // 4. View 속성값 등록
+        interestService.addInterestList(userDetails.getUsername(), productId);
         model.addAttribute("state", "추가");
         return "interest-save-and-delete";
     }
 
     @GetMapping("/delete")
     public String delete(@AuthenticationPrincipal UserDetails userDetails, @RequestParam("productId") Long productId, Model model){
-        // 1. 회원 정보 SELECT
-        Member member = memberService.findMember((userDetails.getUsername()));
-        // 2. 관심 목록에서 삭제 DELETE
-        interestService.deleteInterestByProductList(productId, member.getId());
-        // 3. View 속성값 등록
+        interestService.deleteInterestByProductList(userDetails.getUsername(), productId);
         model.addAttribute("state", "삭제");
         return "interest-save-and-delete";
     }

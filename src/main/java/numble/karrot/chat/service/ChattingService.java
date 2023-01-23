@@ -1,30 +1,61 @@
 package numble.karrot.chat.service;
 
+import lombok.RequiredArgsConstructor;
 import numble.karrot.chat.domain.Chat;
 import numble.karrot.chat.domain.ChatRoom;
+import numble.karrot.chat.repository.ChattingRepository;
 import numble.karrot.member.domain.Member;
+import numble.karrot.member.repository.MemberRepository;
 import numble.karrot.product.domain.Product;
+import numble.karrot.product.repository.ProductRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ChattingService {
+@Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
+public class ChattingService{
 
-    // 1. 전체 채팅방 조회
-    List<ChatRoom> findAllChatRoom();
-    // 2. 특정 회원이 참여중인 채팅방 조회
-    List<ChatRoom> findChatRoomByMember(String email);
-    // 3. 특정 상품의 채팅 가져오기 - 주체 : 구매자
-    ChatRoom findChatRoomByBuyer(Product product, Member buyer);
-    // 4. 특정 채팅방 조회
-    ChatRoom findChatRoomById(Long id);
-    // 5. 특정 채팅방의 채팅 내역 가져오기
-    List<Chat> findChatFromChatRoom(Long roomId);
-    // 6. 채팅 내용 저장
-    Long saveChat(Chat chat);
-    // 7. 특정 상품의 채팅 가져오기 - 주체 : 판매자
-    List<ChatRoom> findChatRoomBySeller(Long productId);
-    Optional<ChatRoom> findChatRoomByName(String name);
-    ChatRoom createChatRoom(ChatRoom chatRoom);
-    void deleteChatRoomByProductId(Long productId);
+    private final ChattingRepository repository;
+    private final MemberRepository memberRepository;
+    private final ProductRepository productRepository;
+
+
+    public List<ChatRoom> findChatRoomByMember(String email) {
+        return repository.findChatRoomByMember(email);
+    }
+
+    public ChatRoom findChatRoomByBuyer(Product product, Member buyer) {
+        return repository.findChatRoomByBuyer(product.getId(), buyer.getId())
+                .orElseGet(()-> new ChatRoom());
+    }
+
+    public List<Chat> findChatFromChatRoom(Long roomId) {
+        return repository.findChatFromChatRoom(roomId);
+    }
+
+
+    @Transactional
+    public Long saveChat(Chat chat) {
+        return repository.saveChat(chat);
+    }
+
+
+    public List<ChatRoom> findChatRoomBySeller(Long productId) {
+        return repository.findChatRoomBySeller(productId);
+    }
+
+
+    @Transactional
+    public ChatRoom findChatRoomByName(Member member, String roomName, Long productId) {
+        return repository.findChatRoomByName(roomName).orElseGet(
+                () -> repository.createChatRoom(ChatRoom.builder()
+                        .roomName(roomName)
+                        .buyer(member)
+                        .product(productRepository.findProductById(productId)).build())
+        );
+    }
 }
