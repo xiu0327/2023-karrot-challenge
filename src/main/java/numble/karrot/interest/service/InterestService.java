@@ -1,17 +1,17 @@
 package numble.karrot.interest.service;
 
 import lombok.RequiredArgsConstructor;
+import numble.karrot.exception.DuplicateInterestExistsException;
+import numble.karrot.exception.InterestNotFoundException;
 import numble.karrot.interest.domain.Interest;
 import numble.karrot.interest.repository.InterestRepository;
 import numble.karrot.member.domain.Member;
 import numble.karrot.member.repository.MemberRepository;
+import numble.karrot.member.service.MemberService;
 import numble.karrot.product.domain.Product;
 import numble.karrot.product.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,19 +23,27 @@ public class InterestService{
 
     @Transactional
     public Long addInterestList(String email, Long productId) {
-        Member member = memberRepository.findMemberByEmail(email);
-        Product product = productRepository.findProductById(productId);
-        return interestRepository.create(Interest.builder()
+        Member member = memberRepository.findByEmail(email).get();
+        checkInterestDuplicate(member.getId(), productId);
+        Interest interest = Interest.builder()
                 .member(member)
-                .product(product).build());
+                .product(productRepository.findById(productId).get()).build();
+        interestRepository.save(interest);
+        return interest.getId();
     }
 
     @Transactional
     public void deleteInterestByProductList(String email, Long productId) {
-        Member member = memberRepository.findMemberByEmail(email);
-        interestRepository.delete(interestRepository.findInterestByMemberAndProduct(member.getId(), productId));
+        Member member = memberRepository.findByEmail(email).get();
+        Interest interest = interestRepository.findByMemberIdAndProductId(member.getId(), productId)
+                .orElseThrow(() -> {throw new InterestNotFoundException();});
+        interest.reduceProductInterestCount();
+        interestRepository.delete(interest);
     }
 
-
+    public void checkInterestDuplicate(Long memberId, Long productId){
+        if(interestRepository.findByMemberIdAndProductId(memberId, productId).isPresent())
+            throw new DuplicateInterestExistsException();
+    }
 
 }

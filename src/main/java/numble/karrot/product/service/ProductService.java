@@ -1,8 +1,8 @@
 package numble.karrot.product.service;
 
 import lombok.RequiredArgsConstructor;
-import numble.karrot.member.domain.Member;
 import numble.karrot.member.repository.MemberRepository;
+import numble.karrot.member.service.MemberService;
 import numble.karrot.product.domain.Product;
 import numble.karrot.product.domain.ProductStatus;
 import numble.karrot.product.dto.ProductRegisterRequest;
@@ -31,38 +31,38 @@ public class ProductService{
     @Transactional
     public Long save(ProductRegisterRequest request, String email) {
         Product product = request.toProductEntity();
-        product.addProduct(memberRepository.findMemberByEmail(email));
+        product.addProduct(memberRepository.findByEmail(email).get());
         productRepository.save(product);
         updateThumbnail(getProductImage(request.getProductImages(), product), product.getId());
         return product.getId();
     }
 
     public Product findOne(Long id) {
-        return productRepository.findProductById(id);
+        return productRepository.findById(id).get();
     }
 
     public List<Product> findAllProducts() {
-        return productRepository.findAllProduct();
+        return productRepository.findAll();
     }
 
     @Transactional
     public void updateThumbnail(List<ProductImage> images, Long productId) {
-        Product product = productRepository.findProductById(productId);
+        Product product = productRepository.findById(productId).get();
         product.setThumbnail(images);
     }
 
     @Transactional
     public void deleteProduct(Long productId) {
-        productRepository.removeProduct(productId);
+        productRepository.delete(productRepository.findById(productId).get());
     }
 
     @Transactional
     public void updateProduct(Long id, Product product) {
-        productRepository.findProductById(id).update(product);
+        productRepository.findById(id).get().update(product);
     }
 
     public void updateProductStatus(Long id, ProductStatus status) {
-        productRepository.findProductById(id).setStatus(status);
+        productRepository.findById(id).get().setStatus(status);
     }
 
     public List<ProductStatus> getChangeableProductStatus(ProductStatus status){

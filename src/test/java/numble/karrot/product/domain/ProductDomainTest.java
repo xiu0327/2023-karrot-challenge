@@ -3,8 +3,8 @@ package numble.karrot.product.domain;
 import numble.karrot.member.domain.Member;
 import numble.karrot.member.dto.MemberJoinRequest;
 import numble.karrot.member.repository.MemberRepository;
+import numble.karrot.member.service.MemberService;
 import numble.karrot.product.dto.ProductRegisterRequest;
-import numble.karrot.product.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,10 +19,7 @@ import static org.assertj.core.api.Assertions.*;
 public class ProductDomainTest {
 
     @Autowired EntityManager em;
-    @Autowired
-    MemberRepository memberRepository;
-    @Autowired
-    ProductRepository productRepository;
+    @Autowired MemberRepository memberRepository;
 
     @Test
     void 상품_생성(){
@@ -36,12 +33,19 @@ public class ProductDomainTest {
                 .content("상품 정보").build().toProductEntity();
         // 연관관계 편의 메서드 실행
         product.addProduct(seller);
+        em.persist(product);
         // 상품 DB 저장
-        Long productId = productRepository.save(product);
+        Long productId = product.getId();
         // 테스트
-        Product findProduct = productRepository.findProductById(productId);
+        Product findProduct = em.find(Product.class, productId);
         assertThat(findProduct).isEqualTo(product);
         assertThat(findProduct.getSeller()).isEqualTo(seller);
+    }
+
+    @Test
+    void 판매자_상품_조회(){
+        Member member = memberRepository.findByEmail("test@naver.com").get();
+        System.out.println(member.getProducts());
     }
 
     Long createMember(){
@@ -52,7 +56,7 @@ public class ProductDomainTest {
                 .phone("휴대폰")
                 .name("이름")
                 .build().toMemberEntity();
-
-        return memberRepository.create(member);
+        em.persist(member);
+        return member.getId();
     }
 }

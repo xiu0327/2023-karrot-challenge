@@ -7,6 +7,8 @@ import numble.karrot.member.domain.Member;
 import numble.karrot.product.domain.Product;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -29,16 +31,23 @@ public class ChatRoom {
     @JoinColumn(name = "buyer_id")
     private Member buyer;
 
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Chat> chats = new ArrayList<>();
+
     public ChatRoom() {
         this.name = UUID.randomUUID().toString();
     }
 
     @Builder
-    public ChatRoom(String roomName, Product product, Member buyer) {
+    public ChatRoom(Long roomId, String roomName, Product product, Member buyer) {
+        this.id = roomId;
         this.name = roomName;
         this.product = product;
         this.buyer = buyer;
     }
 
-
+    /* 비즈니스 로직 */
+    public Chat getLastChat(){
+        return getChats().get(getChats().size()-1);
+    }
 }

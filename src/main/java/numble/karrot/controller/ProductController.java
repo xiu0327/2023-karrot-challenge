@@ -74,18 +74,15 @@ public class ProductController {
 
     /**
      * 상품 상세 정보 페이지 이동
-     * @param id 상품 ID
-     * @param model
-     * @return 상품 상세 정보 페이지
      */
     @GetMapping("/list/{productId}")
-    public String productDetailPage(@AuthenticationPrincipal UserDetails userDetails, @PathVariable("productId") Long id, Model model){
+    public String productDetailPage(@AuthenticationPrincipal UserDetails userDetails, @PathVariable("productId") Long productId, Model model){
         // 1. 회원 정보 조회 SELECT
         Member member = memberService.findMember(userDetails.getUsername());
         // 2. 조회할 판매 상품 SELECT
-        Product product = productService.findOne(id);
+        Product product = productService.findOne(productId);
         // 3. 채팅방 가져오기 SELECT
-        String roomName = chattingService.findChatRoomByBuyer(product, member).getName();
+        String roomName = chattingService.findChatRoomByBuyer(productId, member.getId()).getName();
         // 4. View 속성값 등록
         model.addAttribute("memberId", member.getId());
         model.addAttribute("changeableStatus", productService.getChangeableProductStatus(product.getStatus()));
@@ -193,7 +190,7 @@ public class ProductController {
     @GetMapping("/list/{productId}/chat")
     public String productChatListPage(@PathVariable("productId") Long productId, Model model){
         model.addAttribute("productId", productId);
-        model.addAttribute("chatList", chattingService.findChatRoomBySeller(productId));
+        model.addAttribute("chatList", chattingService.findByProductId(productId));
         return "products/chat";
     }
 

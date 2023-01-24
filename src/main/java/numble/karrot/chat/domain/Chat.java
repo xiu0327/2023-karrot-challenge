@@ -17,8 +17,9 @@ public class Chat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "room_id")
-    private Long roomId;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
+    @JoinColumn(name = "room_id")
+    private ChatRoom chatRoom;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
@@ -34,11 +35,16 @@ public class Chat {
     private String content;
 
     @Builder
-    public Chat(Long roomId, ChatType type, String profile, String nickname, String content) {
-        this.roomId = roomId;
+    public Chat(ChatType type, String profile, String nickname, String content) {
         this.type = type;
         this.profile = profile;
         this.nickname = nickname;
         this.content = content;
+    }
+
+    /* 연관관계 편의 메서드 */
+    public void addChat(ChatRoom chatRoom){
+        this.chatRoom = chatRoom;
+//        chatRoom.getChats().add(this);
     }
 }

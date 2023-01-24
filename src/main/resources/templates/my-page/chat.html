@@ -18,28 +18,13 @@
     <div style="overflow: scroll; width: 100%; height: 500px; background-color:antiquewhite;">
         <div>
             <div th:each="room: ${chatList}">
-                <div th:if="${room.buyer.email == userEmail}" class="list-item">
+                <div class="list-item">
                     <a style="display: flex;" th:href="@{/chat/room(roomName=${room.name}, productId=${room.product.id})}">
                         <div style="display: inline-block;">
-                            <img th:src="${room.product.seller.profile}" class="profile" style="width: 60px; height: 60px;"/>
-                            <div th:text="${room.product.seller.nickName}" style="margin-left: 7px;">닉네임</div>
+                            <img th:src="${room.lastChat.profile}" class="profile" style="width: 60px; height: 60px;"/>
+                            <div th:text="${room.lastChat.nickname}" style="margin-left: 7px;">닉네임</div>
                         </div>
-                        <div style="margin-left: 30px; margin-top: 20px; margin-right: 70px;">마지막 채팅 내용</div>
-                    </a>
-                    <div>
-                        <a th:herf="${'/products/list' + room.product.id}">
-                            <img th:src="${room.product.thumbnail}" style="width: 60px; height: 60px; background-color: black;">
-                        </a>
-                        <div th:text="${room.product.status.value}">상품상태</div>
-                    </div>
-                </div>
-                <div th:if="${room.product.seller.email == userEmail}" class="list-item">
-                    <a style="display: flex;" th:href="@{/chat/room(roomName=${room.name}, productId=${room.product.id})}">
-                        <div style="display: inline-block;">
-                            <img th:src="${room.buyer.profile}" class="profile" style="width: 60px; height: 60px;"/>
-                            <div th:text="${room.buyer.nickName}" style="margin-left: 7px;">닉네임</div>
-                        </div>
-                        <div style="margin-left: 30px; margin-top: 20px; margin-right: 70px;">마지막 채팅 내용</div>
+                        <div th:text="${room.lastChat.content}" style="margin-left: 30px; margin-top: 20px; margin-right: 70px;">마지막 채팅 내용</div>
                     </a>
                     <div>
                         <a th:herf="${'/products/list' + room.product.id}">

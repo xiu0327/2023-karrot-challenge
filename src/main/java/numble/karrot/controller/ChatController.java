@@ -7,6 +7,7 @@ import numble.karrot.chat.service.ChattingService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,7 +33,7 @@ public class ChatController {
      */
     @MessageMapping(value = "/chat/send")
     public void send(ChatDto chatDto){
-        chattingService.saveChat(chatDto.toEntity());
+        chattingService.saveChat(chatDto);
         template.convertAndSend("/sub/chat/room/"+chatDto.getRoomId(), chatDto);
     }
 }

@@ -2,11 +2,14 @@ package numble.karrot.chat.dto;
 
 import lombok.*;
 import numble.karrot.chat.domain.Chat;
+import numble.karrot.chat.domain.ChatRoom;
 import numble.karrot.chat.domain.ChatType;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class ChatDto {
     private Long roomId;
     private ChatType type;
@@ -14,24 +17,15 @@ public class ChatDto {
     private String nickname;
     private String content;
 
-    public Chat toEntity(){
-        return Chat.builder()
-                .roomId(this.roomId)
+    public Chat toEntity(ChatRoom chatRoom){
+        Chat chat = Chat.builder()
                 .type(this.type)
                 .profile(this.profile)
                 .nickname(this.nickname)
                 .content(this.content)
                 .build();
+        chat.addChat(chatRoom);
+        return chat;
     }
 
-    @Override
-    public String toString() {
-        return "ChatDto{" +
-                "roomId=" + roomId +
-                ", type=" + type +
-                ", profile='" + profile + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", content='" + content + '\'' +
-                '}';
-    }
 }

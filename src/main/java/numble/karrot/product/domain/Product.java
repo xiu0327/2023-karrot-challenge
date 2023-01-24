@@ -64,13 +64,13 @@ public class Product {
     @Column(name = "thumbnail")
     private String thumbnail;
 
-    @OneToMany(mappedBy = "product", cascade = {CascadeType.REMOVE, CascadeType.DETACH, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     List<ProductImage> productImages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "product", cascade = {CascadeType.REMOVE, CascadeType.DETACH, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     List<ChatRoom> chatRooms = new ArrayList<>();
 
-    @OneToMany(mappedBy = "product", cascade = {CascadeType.REMOVE, CascadeType.DETACH, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     List<Interest> interests = new ArrayList<>();
 
     @Builder

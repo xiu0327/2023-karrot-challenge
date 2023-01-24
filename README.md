@@ -97,3 +97,9 @@ docker run -d --name karrot-container -p 8080:8080 xiu0327/karrot
   - Interest, Chatting의 Repository, Service 인터페이스 삭제
   - 1차 리팩토링과 유사하게 트랜잭션 범위를 효율적으로 사용하기 위해 Controller에 있는 비즈니스 로직을 Service로 옮김
   - 불필요한 메서드 삭제
+- 1월 25일 : 3차 리팩토링 완료
+  - 모든 Repository를 Spring jpa data로 전환
+### 2. 기능 추가
+- 1월 25일 : 마지막 대화 조회 기능 추가
+  - 연관 관계 메서드에서 `chatRoom.getChats().add(this)`를 추가하면 insert 문에 왜 여러 개 날려지는지 이유 알아낼 것
+  

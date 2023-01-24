@@ -22,27 +22,8 @@ public class ProductImageService{
 
 
     public ProductImage save(ProductImage productImage) {
-        productImageRepository.create(productImage);
+        productImageRepository.save(productImage);
         return productImage;
-    }
-
-    @Transactional(readOnly = true)
-    public List<ProductImage> findProductImages(Product product) {
-        return productImageRepository.findProductImageList(product);
-    }
-
-    @Transactional
-    public ProductImage updateProductImage(ProductImage oldProductImage, ProductImage newProductImage) {
-        productImageRepository.removeProductImage(oldProductImage.getId());
-        productImageRepository.create(newProductImage);
-        return newProductImage;
-    }
-
-    @Transactional
-    public void deleteProductImage(List<ProductImage> productImages) {
-        for (ProductImage image : productImages) {
-            productImageRepository.removeProductImage(image.getId());
-        }
     }
 
     public ProductImage convert(MultipartFile multipartFile, Product product) throws IOException{

@@ -30,8 +30,6 @@ class InterestServiceImplTest {
     @Autowired
     MemberService memberService;
 
-    @Autowired
-    ProductService productService;
 
     @Autowired
     EntityManager em;

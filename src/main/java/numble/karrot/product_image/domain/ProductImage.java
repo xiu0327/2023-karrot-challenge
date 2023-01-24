@@ -36,4 +36,9 @@ public class ProductImage {
         this.product = product;
         product.getProductImages().add(this);
     }
+
+    /* 연관관계 편의 메서드 */
+    public void remove(){
+        product.getProductImages().remove(this);
+    }
 }

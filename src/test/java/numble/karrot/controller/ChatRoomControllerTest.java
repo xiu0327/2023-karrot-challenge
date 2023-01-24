@@ -91,7 +91,7 @@ class ChatRoomControllerTest {
     void enterPage() throws Exception {
         // given
         Long productId = createProduct();
-        String roomName = ChatRoom.builder().build().getName();
+        String roomName = new ChatRoom().getName();
         em.flush();
         // when
         mvc.perform(get("/chat/room?roomName=" + roomName + "&productId=" + productId))
