@@ -8,7 +8,7 @@ import numble.karrot.member.service.MemberService;
 import numble.karrot.product.domain.Product;
 import numble.karrot.product.domain.ProductCategory;
 import numble.karrot.product.dto.ProductRegisterRequest;
-import numble.karrot.product.service.ProductService;
+import numble.karrot.product.service.ProductServiceImpl;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -40,7 +40,7 @@ class ChatRoomControllerTest {
     ChattingService chattingService;
 
     @Autowired
-    ProductService productService;
+    ProductServiceImpl productService;
 
     @Autowired
     MemberService memberService;

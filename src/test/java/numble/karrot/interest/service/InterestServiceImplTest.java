@@ -1,14 +1,12 @@
 package numble.karrot.interest.service;
 
 import numble.karrot.exception.DuplicateInterestExistsException;
-import numble.karrot.interest.domain.Interest;
 import numble.karrot.member.domain.Member;
 import numble.karrot.member.dto.MemberJoinRequest;
 import numble.karrot.member.service.MemberService;
 import numble.karrot.product.domain.Product;
 import numble.karrot.product.domain.ProductCategory;
 import numble.karrot.product.dto.ProductRegisterRequest;
-import numble.karrot.product.service.ProductService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
-import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;

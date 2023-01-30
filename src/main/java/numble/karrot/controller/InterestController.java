@@ -1,12 +1,7 @@
 package numble.karrot.controller;
 
 import lombok.RequiredArgsConstructor;
-import numble.karrot.interest.domain.Interest;
 import numble.karrot.interest.service.InterestService;
-import numble.karrot.member.domain.Member;
-import numble.karrot.member.service.MemberService;
-import numble.karrot.product.domain.Product;
-import numble.karrot.product.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;

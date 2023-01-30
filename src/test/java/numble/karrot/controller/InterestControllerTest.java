@@ -1,6 +1,5 @@
 package numble.karrot.controller;
 
-import numble.karrot.interest.domain.Interest;
 import numble.karrot.interest.service.InterestService;
 import numble.karrot.member.domain.Member;
 import numble.karrot.member.dto.MemberJoinRequest;
@@ -8,7 +7,7 @@ import numble.karrot.member.service.MemberService;
 import numble.karrot.product.domain.Product;
 import numble.karrot.product.domain.ProductCategory;
 import numble.karrot.product.dto.ProductRegisterRequest;
-import numble.karrot.product.service.ProductService;
+import numble.karrot.product.service.ProductServiceImpl;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -39,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class InterestControllerTest {
 
     @Autowired
-    private ProductService productService;
+    private ProductServiceImpl productService;
 
     @Autowired
     private InterestService interestService;

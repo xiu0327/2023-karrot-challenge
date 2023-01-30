@@ -9,7 +9,7 @@ import numble.karrot.product.domain.ProductCategory;
 import numble.karrot.product.domain.ProductStatus;
 import numble.karrot.product.dto.ProductRegisterRequest;
 import numble.karrot.product.dto.ProductUpdateRequest;
-import numble.karrot.product.service.ProductService;
+import numble.karrot.product.service.ProductServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,7 +30,7 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class ProductController {
 
-    private final ProductService productService;
+    private final ProductServiceImpl productService;
     private final MemberService memberService;
     private final ChattingService chattingService;
     private final List<String> categoryList = getCategoryList();

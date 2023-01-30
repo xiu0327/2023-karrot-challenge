@@ -1,19 +1,33 @@
 package numble.karrot.product.domain;
 
-import numble.karrot.product.service.ProductService;
+import numble.karrot.member.domain.Member;
+import numble.karrot.member.dto.MemberJoinRequest;
+import numble.karrot.member.service.MemberService;
+import numble.karrot.product.dto.ProductRegisterRequest;
+import numble.karrot.product.service.ProductServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.time.*;
+import java.util.UUID;
 
 @SpringBootTest
 @Transactional
 class ProductDateHandlerTest {
 
     @Autowired
-    ProductService productService;
+    ProductServiceImpl productService;
+
+    @Autowired
+    MemberService memberService;
+
+    @Autowired
+    EntityManager em;
+
+
 
     /**
      * 상품 등록 시간 변환 핸들러
@@ -23,9 +37,34 @@ class ProductDateHandlerTest {
      * 1년 전 -> 365일전 -> n달 전
      * 1년 후 -> n년 전
      */
+
+    public Long createMember(){
+        Member member = MemberJoinRequest.builder()
+                .email(UUID.randomUUID().toString())
+                .name("이름")
+                .phone("휴대폰")
+                .nickname("닉네임")
+                .password("비밀번호")
+                .build().toMemberEntity();
+        return memberService.join(member);
+    }
+
+    public Long createProduct(){
+        Member seller = memberService.findOne(createMember());
+        Product product = ProductRegisterRequest.builder()
+                .title("상품명")
+                .price(2000)
+                .category(ProductCategory.GAME_HOBBIES.getValue())
+                .content("상품 정보").build().toProductEntity();
+        // 연관관계 편의 메서드 실행
+        product.addProduct(seller);
+        // 상품 DB 저장
+        em.persist(product);
+        return product.getId();
+    }
     @Test
     void 시간_치환_함수_테스트(){
-        Product product = productService.findAllProducts().get(1);
+        Product product = em.find(Product.class, createProduct());
         System.out.println(replaceProductDate(product.getDate().toLocalDateTime()));
     }
 

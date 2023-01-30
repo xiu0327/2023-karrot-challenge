@@ -1,20 +1,15 @@
 package numble.karrot.controller;
 
 import lombok.RequiredArgsConstructor;
-import numble.karrot.chat.domain.Chat;
 import numble.karrot.chat.domain.ChatRoom;
 import numble.karrot.chat.service.ChattingService;
 import numble.karrot.member.domain.Member;
 import numble.karrot.member.service.MemberService;
-import numble.karrot.product.service.ProductService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor

@@ -1,6 +1,5 @@
 package numble.karrot.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import numble.karrot.member.domain.Member;
 import numble.karrot.member.dto.MemberJoinRequest;
 import numble.karrot.member.service.MemberService;
@@ -8,16 +7,13 @@ import numble.karrot.product.domain.Product;
 import numble.karrot.product.domain.ProductCategory;
 import numble.karrot.product.domain.ProductStatus;
 import numble.karrot.product.dto.ProductRegisterRequest;
-import numble.karrot.product.service.ProductService;
-import numble.karrot.product_image.service.ProductImageService;
+import numble.karrot.product.service.ProductServiceImpl;
 import org.junit.Before;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -44,7 +40,7 @@ class ProductControllerTest {
     @Autowired
     private MemberService memberService;
     @Autowired
-    private ProductService productService;
+    private ProductServiceImpl productService;
     @Autowired
     private WebApplicationContext context;
     @Autowired

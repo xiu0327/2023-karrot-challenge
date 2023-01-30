@@ -36,12 +36,14 @@ class ChattingServiceTest {
     void 채팅_생성(){
         Member member = em.find(Member.class, createMember());
         ChatRoom room = chattingService.findChatRoomByName(member, "", createProduct());
-        chattingService.saveChat(ChatDto.builder()
-                        .roomId(room.getId())
-                        .nickname(member.getNickName())
-                        .profile(member.getProfile())
-                        .type(ChatType.MESSAGE)
-                        .content("메시지").build());
+        Long chatId = chattingService.saveChat(ChatDto.builder()
+                .roomId(room.getId())
+                .nickname(member.getNickName())
+                .profile(member.getProfile())
+                .type(ChatType.MESSAGE)
+                .content("메시지").build());
+        Chat newChat = em.find(Chat.class, chatId);
+        newChat.getChatRoom().getChats().add(newChat);
         List<ChatRoom> chatList = chattingService.findChatRoomByMember(member.getEmail());
         List<Chat> chats = chatList.stream().map(i -> i.getLastChat()).collect(Collectors.toList());
         Assertions.assertThat(room.getChats().size()).isEqualTo(1);

@@ -9,7 +9,7 @@ import numble.karrot.member.domain.Member;
 import numble.karrot.member.dto.MemberUpdateRequest;
 import numble.karrot.member.service.MemberService;
 import numble.karrot.product.domain.ProductStatus;
-import numble.karrot.product.service.ProductService;
+import numble.karrot.product.service.ProductServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -27,7 +27,7 @@ import java.util.List;
 public class MyPageController {
 
     private final MemberService memberService;
-    private final ProductService productService;
+    private final ProductServiceImpl productService;
     private final InterestService interestService;
     private final ChattingService chattingService;
     private final S3Uploader s3Uploader;
